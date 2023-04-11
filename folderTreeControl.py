@@ -43,6 +43,9 @@ def getFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree)
             getFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)
 
 
+def expandFolderTree():
+
+    print(expandFolderTree.__name__)
 
 
 
