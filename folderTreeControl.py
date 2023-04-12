@@ -2,8 +2,78 @@ import os
 import pathlib
 import glob
 
-from anytree import Node, RenderTree
 import data
+
+
+########################################################
+#
+########################################################
+def expandFolderTree(root):
+    print(expandFolderTree.__name__)
+
+    #引数で指定された、フォルダを展開する先頭フォルダの位置を検出
+    index = 0
+    while True:
+        if root in data.lst_branch[index]:
+            expandTopIndex = index
+            break
+
+        index = index + 1
+
+    branchNum = len(data.lst_branch)
+
+    index = expandTopIndex
+    result = False
+    mark = ''
+    branchMarkPos = -1
+    expandFullPath = data.lst_branch[expandTopIndex]
+    curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(data.lst_branch[expandTopIndex])
+
+    while index < branchNum:
+        #次を見る（加算したインデックス値は保存しない）
+        next_ret, next_mark, next_branchMarkPos = isIncludeBranchMark(data.lst_branch[index + 1])
+
+        if curr_mark == '└' and curr_branchMarkPos != 0:
+            EndOfPath = True
+        elif curr_branchMarkPos == next_branchMarkPos:
+            EndOfPath = True
+        else:
+            EndOfPath = False
+
+        if EndOfPath == True:
+
+            data.expandFullPath.append(expandFullPath)
+            #初期化
+            expandFullPath = data.lst_branch[expandTopIndex]
+        else:
+            index = index + 1
+            expandFullPath = expandFullPath + r'\\' + data.lst_branch[index]
+
+        curr_ret = next_ret
+        curr_mark = next_mark
+        curr_branchMarkPos = next_branchMarkPos
+
+    return expandTopIndex
+
+def isIncludeBranchMark(targetBranch):
+
+    if '├' in targetBranch:
+        ret = True
+        mark = '├'
+    elif '└' in targetBranch:
+        ret = True
+        mark = '└'
+    else:
+        #本来ここは通らない
+        ret = False
+        mark = ''
+
+    if ret == True:
+        pos = targetBranch.find(mark)
+    else:
+        pos = -1
+
+    return ret, mark, pos
 
 def getFolderFullpath(root):
     getFolderTree(path=root, layer=0, is_last=False, indent_current=data.indent_tree)
@@ -43,37 +113,3 @@ def getFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree)
             getFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)
 
 
-def expandFolderTree():
-
-    print(expandFolderTree.__name__)
-
-
-
-###########################################
-#   フォルダフルパスの取得
-###########################################
-def getFolderTree_test(root):
-
-    print(data.strFunc, 'generateFolderpath : ', root)
-
-    tpl_retWalk = os.walk(root)
-
-    parentFolder = Node(root, parent=None)
-
-    for index, [dir,subDirs,files] in enumerate(tpl_retWalk):
-        print("--------------------",index, "--------------------")
-
-        print(dir)
-        print(subDirs)
-
-        spltDir = dir.split('\\')
-
-        parentBranch = parentFolder
-        for index, branch in enumerate(spltDir[2:]):
-            #print(branch)
-            nodeBranch = Node(branch, parent=parentBranch)
-            parentBranch = nodeBranch
-            #parentBranch = Node(root, parent=None)
-
-    #for pre, fill, node in RenderTree(parentFolder):
-    #    print("%s%s" % (pre, node.name))

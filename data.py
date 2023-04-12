@@ -15,3 +15,7 @@ getEndRowCout = 'getEndOfRowCount'
 strFunc = "[func]"
 
 indent_tree = " "
+
+
+lst_branch = []
+lst_expandBranch = []
