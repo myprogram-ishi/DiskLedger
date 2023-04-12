@@ -33,13 +33,21 @@ def expandFolderTree(root):
         #次を見る（加算したインデックス値は保存しない）
         next_ret, next_mark, next_branchMarkPos = isIncludeBranchMark(data.lst_branch[index + 1])
 
-        if curr_mark == '└' and curr_branchMarkPos != 0:
-            EndOfPath = True
+        #終端判定
+        if curr_mark == '└' :
+            if next_branchMarkPos < 0:
+                EndOfPath = True
+            elif next_branchMarkPos > curr_branchMarkPos:
+                EndOfPath = False
+            else:
+                EndOfPath = True
+
         elif curr_branchMarkPos == next_branchMarkPos:
             EndOfPath = True
         else:
             EndOfPath = False
 
+        #終端判定に基づく処理
         if EndOfPath == True:
 
             data.expandFullPath.append(expandFullPath)
@@ -49,6 +57,7 @@ def expandFolderTree(root):
             index = index + 1
             expandFullPath = expandFullPath + r'\\' + data.lst_branch[index]
 
+        #次の処理の準備
         curr_ret = next_ret
         curr_mark = next_mark
         curr_branchMarkPos = next_branchMarkPos
@@ -64,7 +73,6 @@ def isIncludeBranchMark(targetBranch):
         ret = True
         mark = '└'
     else:
-        #本来ここは通らない
         ret = False
         mark = ''
 
