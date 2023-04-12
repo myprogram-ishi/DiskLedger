@@ -3,7 +3,7 @@ import pathlib
 import glob
 
 import data
-
+import inerfaceExcel
 
 ########################################################
 #
@@ -53,6 +53,8 @@ def expandFolderTree(root):
             data.expandFullPath.append(expandFullPath)
             #初期化
             expandFullPath = data.lst_branch[expandTopIndex]
+
+            inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFullPath)
         else:
             index = index + 1
             expandFullPath = expandFullPath + r'\\' + data.lst_branch[index]
