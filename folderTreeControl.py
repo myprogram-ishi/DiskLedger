@@ -6,7 +6,7 @@ import data
 import inerfaceExcel
 
 ########################################################
-#
+#   フォルダツリー展開
 ########################################################
 def expandFolderTree(root):
     print(expandFolderTree.__name__)
@@ -21,6 +21,54 @@ def expandFolderTree(root):
         index = index + 1
 
     branchNum = len(data.lst_branch)
+
+    expandFolderTree_from_BranchTip(root)
+
+    #expandFolderTree_from_BranchTop(root)
+
+########################################################
+#   フォルダツリーの末端から探す
+########################################################
+def expandFolderTree_from_BranchTip(root):
+
+    inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFolderTree_from_BranchTip.__name__)
+
+    lst_end = len(data.lst_branch) -1
+    branchIndex = lst_end
+    before_ret = 0
+    before_mark = 0
+    before_branchMarkPos = 0
+
+    while branchIndex > 0:
+
+        #ブランチ名
+        expandFullPath = data.lst_branch[branchIndex]
+        branchIndex_work = branchIndex
+
+        #ブランチにパスを付加していく
+        while branchIndex_work > 0:
+            curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(data.lst_branch[branchIndex_work])
+
+            if curr_branchMarkPos < before_branchMarkPos:
+                expandFullPath = data.lst_branch[branchIndex_work] + '\\' + expandFullPath
+
+            before_ret = curr_ret
+            before_mark = curr_mark
+            before_branchMarkPos = curr_branchMarkPos
+            branchIndex_work = branchIndex_work - 1
+
+        #生成したフルパスを追加
+        data.lst_expandFullPath.append(expandFullPath)
+        inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFullPath)
+
+        #次のブラチのフルパス作成のための変数設定
+        branchIndex = branchIndex -1
+
+########################################################
+#   フォルダツリーのトップから探す
+########################################################
+def expandFolderTree_from_BranchTop(root):
+    print(expandFolderTree.__name__)
 
     index = expandTopIndex
     result = False
@@ -66,6 +114,9 @@ def expandFolderTree(root):
 
     return expandTopIndex
 
+########################################################
+#
+########################################################
 def isIncludeBranchMark(targetBranch):
 
     if '├' in targetBranch:

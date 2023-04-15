@@ -3,6 +3,8 @@
 #   文字列
 ###############################
 
+srcExcel = ''
+
 #エクセルシート名
 shtName_main = 'メイン'
 shtName_base = '基準'
@@ -18,4 +20,4 @@ indent_tree = " "
 
 
 lst_branch = []
-lst_expandBranch = []
+lst_expandFullPath = []
