@@ -9,7 +9,8 @@ import inerfaceExcel
 #   フォルダツリー展開
 ########################################################
 def expandFolderTree(root):
-    print(expandFolderTree.__name__)
+
+    inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFolderTree.__name__)
 
     #引数で指定された、フォルダを展開する先頭フォルダの位置を検出
     index = 0
@@ -22,7 +23,7 @@ def expandFolderTree(root):
 
     branchNum = len(data.lst_branch)
 
-    expandFolderTree_from_BranchTip(root)
+    #expandFolderTree_from_BranchTip(root)
 
     #expandFolderTree_from_BranchTop(root)
 
@@ -136,6 +137,9 @@ def isIncludeBranchMark(targetBranch):
 
     return ret, mark, pos
 
+########################################################
+#
+########################################################
 def getFolderFullpath(root):
     getFolderTree(path=root, layer=0, is_last=False, indent_current=data.indent_tree)
 
