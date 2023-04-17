@@ -10,6 +10,7 @@ shtName_main = 'メイン'
 shtName_base = '基準'
 shtName_dbgLog = 'debug_log'
 shtName_pyDbgLog = 'python_log'
+shtName_Expand = r'Expand'
 
 xlInterface = 'Module_interfacePython'
 

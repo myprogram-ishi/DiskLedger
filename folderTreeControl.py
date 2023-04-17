@@ -10,7 +10,7 @@ import inerfaceExcel
 ########################################################
 def expandFolderTree(root):
 
-    inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFolderTree.__name__)
+    inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree.__name__)
 
     #引数で指定された、フォルダを展開する先頭フォルダの位置を検出
     index = 0
@@ -23,7 +23,7 @@ def expandFolderTree(root):
 
     branchNum = len(data.lst_branch)
 
-    #expandFolderTree_from_BranchTip(root)
+    expandFolderTree_from_BranchTip(root)
 
     #expandFolderTree_from_BranchTop(root)
 
@@ -32,18 +32,21 @@ def expandFolderTree(root):
 ########################################################
 def expandFolderTree_from_BranchTip(root):
 
-    inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFolderTree_from_BranchTip.__name__)
+    inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_BranchTip.__name__)
 
-    lst_end = len(data.lst_branch) -1
+    rowDownCnt = len(data.lst_branch)   #エクセルシート↑の行番号なので、１から配列要素お個数分。
+    lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
     branchIndex = lst_end
     before_ret = 0
     before_mark = 0
     before_branchMarkPos = 0
 
     while branchIndex > 0:
-
         #ブランチ名
-        expandFullPath = data.lst_branch[branchIndex]
+        work_expandFullPath = data.lst_branch[branchIndex]
+        topPos = work_expandFullPath.find('─')
+        expandFullPath = work_expandFullPath[topPos + 1:]
+
         branchIndex_work = branchIndex
 
         #ブランチにパスを付加していく
@@ -51,16 +54,19 @@ def expandFolderTree_from_BranchTip(root):
             curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(data.lst_branch[branchIndex_work])
 
             if curr_branchMarkPos < before_branchMarkPos:
-                expandFullPath = data.lst_branch[branchIndex_work] + '\\' + expandFullPath
+                work_expandFullPath = expandFullPath
+                topPos_expnd = work_expandFullPath.find('─')
+                topPos_lstbrnch = data.lst_branch[branchIndex_work].find('─')
+                expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + '\\' + work_expandFullPath[topPos_expnd+1:]
 
-            before_ret = curr_ret
-            before_mark = curr_mark
             before_branchMarkPos = curr_branchMarkPos
             branchIndex_work = branchIndex_work - 1
 
         #生成したフルパスを追加
         data.lst_expandFullPath.append(expandFullPath)
-        inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFullPath)
+        #inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
+        inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=1, outval=expandFullPath)
+        rowDownCnt = rowDownCnt - 1
 
         #次のブラチのフルパス作成のための変数設定
         branchIndex = branchIndex -1
@@ -176,5 +182,3 @@ def getFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree)
 
         if os.path.isdir(p):
             getFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)
-
-
