@@ -155,18 +155,27 @@ def getFolderFullpath(root):
 ##  Pythonでファイルのツリー構造を出力する
 ##  https://qiita.com/horisuke/items/389ec60407b3baf45f25#%E7%B5%90%E8%AB%96
 ###############################################################################
-def getFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree):
+
+def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree):
 
     if not pathlib.Path(path).is_absolute():
         path = str(pathlib.Path(path).resolve())
 
     current = path.split('\\')[::-1][0]
     if layer == 0:
+        data.lst_generateToAddFolderTree.clear()
         # カレントディレクトリの表示
-        print('<'+current+'>')
+        #print('<'+current+'>')
+        test = repr(path)
+        pos = path.find(r'\')
+
+        data.lst_generateToAddFolderTree.append(test)
+        #data.lst_generateToAddFolderTree.append('<' + current + '>')
+        #inerfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
         branch = '└' if is_last else '├'
-        print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
+        #print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
+        data.lst_generateToAddFolderTree.append('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
 
     # 下の階層のパスを取得
     paths = [p for p in glob.glob(path+'/*') if os.path.isdir(p)]
@@ -181,4 +190,4 @@ def getFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree)
             indent_lower += data.indent_tree if is_last else '│　'
 
         if os.path.isdir(p):
-            getFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)
+            generateFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)

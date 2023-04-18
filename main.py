@@ -3,7 +3,7 @@
 # Shift+F10 を押して実行するか、ご自身のコードに置き換えてください。
 # Shift を2回押す を押すと、クラス/ファイル/ツールウィンドウ/アクション/設定を検索します。
 
-import folderTreeControl as fldrctrl
+#import folderTreeControl as fldrctrl
 
 def print_hi(name):
     # スクリプトをデバッグするには以下のコード行でブレークポイントを使用してください。
@@ -14,9 +14,12 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
+    test = 'c:\\test'
+
+    print(test)
     #fldrctrl.getFolderTree(root="c:\\")
 
-    fldrctrl.getFolderFullpath(root="C:\\sourcrcode")
+    #fldrctrl.getFolderFullpath(root="C:\\sourcrcode")
 
 
 # PyCharm のヘルプは https://www.jetbrains.com/help/pycharm/ を参照してください
