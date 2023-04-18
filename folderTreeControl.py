@@ -155,7 +155,6 @@ def getFolderFullpath(root):
 ##  Pythonでファイルのツリー構造を出力する
 ##  https://qiita.com/horisuke/items/389ec60407b3baf45f25#%E7%B5%90%E8%AB%96
 ###############################################################################
-
 def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree):
 
     if not pathlib.Path(path).is_absolute():
@@ -166,10 +165,7 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
         data.lst_generateToAddFolderTree.clear()
         # カレントディレクトリの表示
         #print('<'+current+'>')
-        test = repr(path)
-        pos = path.find(r'\')
-
-        data.lst_generateToAddFolderTree.append(test)
+        data.lst_generateToAddFolderTree.append(path)
         #data.lst_generateToAddFolderTree.append('<' + current + '>')
         #inerfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
