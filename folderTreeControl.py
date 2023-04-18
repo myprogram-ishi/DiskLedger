@@ -183,7 +183,7 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
 
         indent_lower = indent_current
         if layer != 0:
-            indent_lower += data.indent_tree if is_last else '│　'
+            indent_lower += data.indent_tree if is_last else '│ '
 
         if os.path.isdir(p):
             generateFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)
