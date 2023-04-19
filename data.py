@@ -12,6 +12,7 @@ shtName_dbgLog = 'debug_log'
 shtName_pyDbgLog = 'python_log'
 shtName_Expand = r'Expand'
 
+treeTop = ':\\'
 searchRootFolder = 'SPB_17.2'
 
 xlInterface = 'Module_interfacePython'
