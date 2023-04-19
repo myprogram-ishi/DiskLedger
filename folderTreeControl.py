@@ -39,7 +39,7 @@ def expandFolderTree_from_BranchTip(root, col):
     branchIndex = lst_end
     before_ret = 0
     before_mark = 0
-    before_branchMarkPos = -1
+    before_branchMarkPos = -1   #府数設定は、初期状態を意味する
 
     while branchIndex > 0:
         #ブランチ名
@@ -47,6 +47,7 @@ def expandFolderTree_from_BranchTip(root, col):
         topPos = work_expandFullPath.find('─')
         expandFullPath = work_expandFullPath[topPos + 1:]
         branchIndex_work = branchIndex
+        before_branchMarkPos = -1
 
         #ブランチにパスを付加していく
         while branchIndex_work >= 0:
@@ -57,11 +58,14 @@ def expandFolderTree_from_BranchTip(root, col):
             topPos_lstbrnch = data.lst_branch[branchIndex_work].find('─')
 
             if before_branchMarkPos < 0:
+                #最初の１回目
                 expandFullPath = work_expandFullPath[topPos_expnd+1:]
+                before_branchMarkPos = curr_branchMarkPos
+
             elif curr_branchMarkPos < before_branchMarkPos:
                 expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + '\\' + work_expandFullPath[topPos_expnd+1:]
+                before_branchMarkPos = curr_branchMarkPos
 
-            before_branchMarkPos = curr_branchMarkPos
             branchIndex_work = branchIndex_work - 1
 
         #生成したフルパスを追加
@@ -124,7 +128,8 @@ def expandFolderTree_from_BranchTop(root):
     return expandTopIndex
 
 ########################################################
-#
+#   ブランチマークの有無および位置を検出する
+#   分岐マーク：'├'　'└'
 ########################################################
 def isIncludeBranchMark(targetBranch):
 
