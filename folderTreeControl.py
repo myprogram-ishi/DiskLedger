@@ -55,7 +55,12 @@ def expandFolderTree_from_BranchTip(root, col):
 
             work_expandFullPath = expandFullPath
             topPos_expnd = work_expandFullPath.find('─')
+            if topPos_expnd < 0:
+                topPos_expnd = work_expandFullPath.find('└')
+
             topPos_lstbrnch = data.lst_branch[branchIndex_work].find('─')
+            if topPos_lstbrnch < 0:
+                topPos_lstbrnch = data.lst_branch[branchIndex_work].find('└')
 
             if before_branchMarkPos < 0:
                 #最初の１回目
@@ -63,7 +68,7 @@ def expandFolderTree_from_BranchTip(root, col):
                 before_branchMarkPos = curr_branchMarkPos
 
             elif curr_branchMarkPos < before_branchMarkPos:
-                expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + r'\\' + work_expandFullPath[topPos_expnd+1:]
+                expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + '\\' + work_expandFullPath[topPos_expnd+1:]
                 before_branchMarkPos = curr_branchMarkPos
 
             branchIndex_work = branchIndex_work - 1
@@ -118,7 +123,7 @@ def expandFolderTree_from_BranchTop(root):
             inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFullPath)
         else:
             index = index + 1
-            expandFullPath = expandFullPath + r'\\' + data.lst_branch[index]
+            expandFullPath = expandFullPath + '\\' + data.lst_branch[index]
 
         #次の処理の準備
         curr_ret = next_ret
