@@ -63,7 +63,7 @@ def expandFolderTree_from_BranchTip(root, col):
                 before_branchMarkPos = curr_branchMarkPos
 
             elif curr_branchMarkPos < before_branchMarkPos:
-                expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + '\\' + work_expandFullPath[topPos_expnd+1:]
+                expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + r'\\' + work_expandFullPath[topPos_expnd+1:]
                 before_branchMarkPos = curr_branchMarkPos
 
             branchIndex_work = branchIndex_work - 1
@@ -155,7 +155,7 @@ def isIncludeBranchMark(targetBranch):
 #
 ########################################################
 def getFolderFullpath(root):
-    getFolderTree(path=root, layer=0, is_last=False, indent_current=data.indent_tree)
+    getFolderTree(path=str(root), layer=0, is_last=False, indent_current=data.indent_tree)
 
 ###############################################################################
 ##  フォルダツリー作成
@@ -173,7 +173,7 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
         data.lst_generateToAddFolderTree.clear()
         # カレントディレクトリの表示
         #print('<'+current+'>')
-        data.lst_generateToAddFolderTree.append(path)
+        data.lst_generateToAddFolderTree.append(str(path))
         #data.lst_generateToAddFolderTree.append('<' + current + '>')
         #inerfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
