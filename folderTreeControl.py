@@ -74,7 +74,7 @@ def expandFolderTree_from_BranchTip(root, col):
             branchIndex_work = branchIndex_work - 1
 
         #生成したフルパスを追加
-        data.lst_expandFullPath.append(expandFullPath)
+        data.lst_expandFolderTreeTarget.append(expandFullPath)
         #inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
         inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=col, outval=expandFullPath)
         rowDownCnt = rowDownCnt - 1

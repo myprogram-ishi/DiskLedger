@@ -25,4 +25,4 @@ indent_tree = " "
 
 lst_generateToAddFolderTree = []
 lst_branch = []
-lst_expandFullPath = []
+lst_expandFolderTreeTarget = []
