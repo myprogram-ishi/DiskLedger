@@ -27,3 +27,10 @@ lst_generateToAddFolderTree = []
 lst_branch = []
 lst_expandFolderTreeBase = []
 lst_expandFolderTreeTarget = []
+
+
+def dataClear():
+    lst_branch.clear()
+    lst_expandFolderTreeTarget.clear()
+    lst_generateToAddFolderTree.clear()
+    lst_expandFolderTreeBase.clear()
