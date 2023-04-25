@@ -68,7 +68,14 @@ def expandFolderTree_from_BranchTip(root, col):
                 before_branchMarkPos = curr_branchMarkPos
 
             elif curr_branchMarkPos < before_branchMarkPos:
-                expandFullPath = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:] + '\\' + work_expandFullPath[topPos_expnd+1:]
+                upperBranch = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:]
+
+                #末尾に\がついているかいないかで処理を分ける
+                if upperBranch[-1] == '\\':
+                    expandFullPath = upperBranch + work_expandFullPath[topPos_expnd + 1:]
+                else:
+                    expandFullPath = upperBranch + '\\' + work_expandFullPath[topPos_expnd+1:]
+
                 before_branchMarkPos = curr_branchMarkPos
 
             branchIndex_work = branchIndex_work - 1
