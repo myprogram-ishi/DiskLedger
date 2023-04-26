@@ -44,31 +44,53 @@ def expandFolderTree_from_BranchTip(root, col):
     while branchIndex > 0:
         #ブランチ名
         work_expandFullPath = data.lst_branch[branchIndex]
-        topPos = work_expandFullPath.find('─')
+        dummyRet, dummyMark, topPos = getPostionOfHoraizonalBar(work_expandFullPath)
+
         expandFullPath = work_expandFullPath[topPos + 1:]
-        branchIndex_work = branchIndex
-        before_branchMarkPos = -1
+        work_branchIndex = branchIndex  #フォルダの一番下の階層（初期値）
+        before_branchMarkPos = -1       #負数で、初期値を表す
 
         #ブランチにパスを付加していく
-        while branchIndex_work >= 0:
-            curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(data.lst_branch[branchIndex_work])
+        while work_branchIndex >= 0:
 
+            work_lst_branch = data.lst_branch[work_branchIndex]
+            curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
+
+            #フォルダの一番下の階層
             work_expandFullPath = expandFullPath
-            topPos_expnd = work_expandFullPath.find('─')
-            if topPos_expnd < 0:
-                topPos_expnd = work_expandFullPath.find('└')
 
-            topPos_lstbrnch = data.lst_branch[branchIndex_work].find('─')
+            r_ret, r_mark, topPos_expnd = isIncludeBranchMark(work_expandFullPath)
+
+            #topPos_lstbrnch = work_lst_branch.find('─')
+            dummyRet, dummyMark, topPos_lstbrnch = getPostionOfHoraizonalBar(work_expandFullPath)
+
             if topPos_lstbrnch < 0:
-                topPos_lstbrnch = data.lst_branch[branchIndex_work].find('└')
+                topPos_lstbrnch = work_lst_branch.find('└')
 
             if before_branchMarkPos < 0:
                 #最初の１回目
                 expandFullPath = work_expandFullPath[topPos_expnd+1:]
                 before_branchMarkPos = curr_branchMarkPos
 
+            elif curr_branchMarkPos == before_branchMarkPos:
+                currentBranch = data.lst_branch[branchIndex]
+                topPos_lstbrnch = currentBranch.find('├')
+                if topPos_lstbrnch >= 0:
+                    #expandFullPath = 'branchIndex = ' + str(branchIndex) + 'work_branchIndex = ' + str(work_branchIndex)
+                    expandFullPath = currentBranch[topPos_lstbrnch+1:]
+                else:
+                    topPos_lstbrnch = currentBranch.find('└')
+                    if topPos_lstbrnch >= 0:
+                        expandFullPath =  currentBranch[topPos_lstbrnch+1:]
+                    else:
+                        expandFullPath = '???' + work_lst_branch
+
+                result, dummyMark, topPos = getPostionOfHoraizonalBar(expandFullPath)
+                if result == True:
+                    expandFullPath = expandFullPath[topPos+1:]
+
             elif curr_branchMarkPos < before_branchMarkPos:
-                upperBranch = (data.lst_branch[branchIndex_work])[topPos_lstbrnch + 1:]
+                upperBranch = work_lst_branch[topPos_lstbrnch + 1:]
 
                 #末尾に\がついているかいないかで処理を分ける
                 if upperBranch[-1] == '\\':
@@ -76,9 +98,15 @@ def expandFolderTree_from_BranchTip(root, col):
                 else:
                     expandFullPath = upperBranch + '\\' + work_expandFullPath[topPos_expnd+1:]
 
+                expandFullPath = expandFullPath + ' : branchIndex = ' + str(branchIndex)
+
+                result, dummyMark, topPos = getPostionOfHoraizonalBar(expandFullPath)
+                if result == True:
+                    expandFullPath = expandFullPath[topPos+1:]
+
                 before_branchMarkPos = curr_branchMarkPos
 
-            branchIndex_work = branchIndex_work - 1
+            work_branchIndex = work_branchIndex - 1
 
         #生成したフルパスを追加
         data.lst_expandFolderTreeTarget.append(expandFullPath)
@@ -162,6 +190,27 @@ def isIncludeBranchMark(targetBranch):
         pos = -1
 
     return ret, mark, pos
+
+def getPostionOfHoraizonalBar(targetBranch):
+
+    if '─' in targetBranch:
+        ret = True
+        mark = '─'
+    elif "―" in targetBranch:
+        ret = True
+        mark = "―"
+    else:
+        ret = False
+        mark = ''
+
+    #ブランチ記号が見つかった場合、その位置を取得する
+    if ret == True:
+        pos = targetBranch.find(mark)
+    else:
+        pos = -1
+
+    return ret, mark, pos
+
 
 ########################################################
 #
