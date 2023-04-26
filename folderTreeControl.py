@@ -70,6 +70,7 @@ def expandFolderTree_from_BranchTip(root, col):
             if before_branchMarkPos < 0:
                 #最初の１回目
                 expandFullPath = work_expandFullPath[topPos_expnd+1:]
+                expandFullPath = expandFullPath + '>' + str(work_branchIndex) + '>'
                 before_branchMarkPos = curr_branchMarkPos
 
             elif curr_branchMarkPos == before_branchMarkPos:
@@ -89,6 +90,8 @@ def expandFolderTree_from_BranchTip(root, col):
                 if result == True:
                     expandFullPath = expandFullPath[topPos+1:]
 
+                expandFullPath = expandFullPath + '{' + str(work_branchIndex) + '}'
+
             elif curr_branchMarkPos < before_branchMarkPos:
                 upperBranch = work_lst_branch[topPos_lstbrnch + 1:]
 
@@ -98,7 +101,7 @@ def expandFolderTree_from_BranchTip(root, col):
                 else:
                     expandFullPath = upperBranch + '\\' + work_expandFullPath[topPos_expnd+1:]
 
-                expandFullPath = expandFullPath + ' : branchIndex = ' + str(branchIndex)
+                expandFullPath = expandFullPath + '[' + str(work_branchIndex) + ']'
 
                 result, dummyMark, topPos = getPostionOfHoraizonalBar(expandFullPath)
                 if result == True:
