@@ -3,14 +3,14 @@ import pathlib
 import glob
 
 import data
-import inerfaceExcel
+import interfaceExcel
 
 ########################################################
 #   フォルダツリー展開
 ########################################################
 def expandFolderTree(root, col):
 
-    inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree.__name__)
+    interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree.__name__)
 
     #引数で指定された、フォルダを展開する先頭フォルダの位置を検出
     index = 0
@@ -32,15 +32,15 @@ def expandFolderTree(root, col):
 ########################################################
 def expandFolderTree_from_BranchTip(root, col):
 
-    inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_BranchTip.__name__)
+    interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_BranchTip.__name__)
 
     rowDownCnt = len(data.lst_branch)   #エクセルシート↑の行番号なので、１から配列要素お個数分。
     lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
     branchIndex = lst_end
 
     #data.lst_expandFolderTreeTarget.append(root)
-    #inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, data.lst_expandFolderTreeTarget[0])
-    #inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=1, col=col,
+    #interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, data.lst_expandFolderTreeTarget[0])
+    #interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=1, col=col,
     #                                        outval=data.lst_expandFolderTreeTarget[0])
     while branchIndex > 0:
 
@@ -48,8 +48,8 @@ def expandFolderTree_from_BranchTip(root, col):
 
         #生成したフルパスを追加
         data.lst_expandFolderTreeTarget.append(ret_expandFullPath)
-        #inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
-        inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=col,
+        #interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
+        interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=col,
                                                  outval=ret_expandFullPath)
         rowDownCnt = rowDownCnt - 1
 
@@ -212,7 +212,7 @@ def expandFolderTree_from_BranchTop(root):
             #初期化
             expandFullPath = data.lst_branch[expandTopIndex]
 
-            inerfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFullPath)
+            interfaceExcel.excelIO_UDF_appendDataToLasRow(r'Expand', 1, expandFullPath)
         else:
             index = index + 1
             expandFullPath = expandFullPath + '\\' + data.lst_branch[index]
@@ -293,7 +293,7 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
         #print('<'+current+'>')
         data.lst_generateToAddFolderTree.append(str(path))
         #data.lst_generateToAddFolderTree.append('<' + current + '>')
-        #inerfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
+        #interfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
         branch = '└' if is_last else '├'
         #print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
