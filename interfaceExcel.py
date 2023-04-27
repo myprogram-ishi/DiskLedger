@@ -5,13 +5,11 @@ import data
 import folderTreeControl
 
 ########################################################
-#      初期化
+#      初期化　変数クリアなど
 ########################################################
 @xlw.func
 def excelIO_UDF_initialize():
-
     data.dataClear()
-
 @xlw.func
 def excelIO_UDF_clear_lst_expand_base():
     data.lst_expandFolderTreeBase.clear()

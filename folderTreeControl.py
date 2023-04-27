@@ -83,7 +83,7 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
         curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
 
         if curr_branchMarkPos < before_branchMarkPos:
-            # 一つ上の改装
+            # 一つ上の階層
             upperBranch = work_lst_branch[curr_branchMarkPos + 1:]
 
             result, mark, pos = getPostionOfHoraizonalBar(upperBranch)
