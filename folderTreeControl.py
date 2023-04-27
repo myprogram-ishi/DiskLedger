@@ -90,7 +90,12 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
             if result == True:
                 upperBranch = upperBranch[pos + 1:]
 
-            expandFullPath = upperBranch + '\\' + expandFullPath
+            if upperBranch[-1] == '\\':
+                # 末尾に\がついているかいないかで処理を分ける
+                expandFullPath = upperBranch + expandFullPath
+            else:
+                expandFullPath = upperBranch + '\\' + expandFullPath
+
             before_branchMarkPos = curr_branchMarkPos
 
         work_branchIndex = work_branchIndex - 1
@@ -248,6 +253,10 @@ def isIncludeBranchMark(targetBranch):
 
     return ret, mark, pos
 
+########################################################
+#   横棒の有無および位置を検出する
+#   横棒：'-'　'ー'
+########################################################
 def getPostionOfHoraizonalBar(targetBranch):
 
     if '─' in targetBranch:

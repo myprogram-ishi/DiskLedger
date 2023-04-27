@@ -12,6 +12,13 @@ def excelIO_UDF_initialize():
 
     data.dataClear()
 
+@xlw.func
+def excelIO_UDF_clear_lst_expand_base():
+    data.lst_expandFolderTreeBase.clear()
+@xlw.func
+def excelIO_UDF_clear_lst_expand_target():
+    data.lst_expandFolderTreeTarget.clear()
+
 ########################################################
 #      エクセルとの入出力メイン関数
 ########################################################
@@ -66,14 +73,13 @@ def excelIO_UDF_expandFolderTree(srcExcel= None, srcSheet= None, dstSheet= None,
     sheet_base = wb.sheets[data.shtName_base]
     sheet_pyLog = wb.sheets[data.shtName_dbgLog]
 
-    #ふぉるdツリーの最後の行を取得する
+    #フォルダツリーの最後の行を取得する
     macro = wb.macro(data.xlInterface + '.' + data.getEndRowCout)
     EndRow = macro(data.shtName_base, col)
 
     branchName = sheet_base.cells(row,col).value
     data.lst_branch.clear()
     while row <= EndRow:
-
         data.lst_branch.append(branchName)
         row = row + 1
         branchName = sheet_base.cells(row, col).value
@@ -125,11 +131,15 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         lst_work_expandFolderTreeBase = data.lst_expandFolderTreeBase
         lst_work_expandFolderTreeTarget = data.lst_expandFolderTreeTarget
 
+    col = 2
+    sheet_result.cells(1, col).value = len(lst_work_expandFolderTreeBase)
     for row, item in enumerate(lst_work_expandFolderTreeBase, 1):
-        sheet_result.cells(row, 2).value = item
+        sheet_result.cells(row + 4, col).value = item
 
+    col = 3
+    sheet_result.cells(1, col).value = len(lst_work_expandFolderTreeTarget)
     for row, item in enumerate(lst_work_expandFolderTreeTarget, 1):
-        sheet_result.cells(row, 3).value = item
+        sheet_result.cells(row + 4, col).value = item
 
 ##########################################################################################
 def debug():
@@ -200,11 +210,9 @@ def excelIO_UDF_appendDataToLasRow(shtName,col, setVal):
 ########################################################
 @xlw.func
 def excelIO_UDF_getSearchRootFolder():
-
     wb = xlw.Book(data.currentExcel)
     macro = wb.macro(data.xlInterface + '.' + 'getSearchRootFolder')
     data.searchRootFolder = macro()
-
 
 ########################################################
 # 比較基準になるフォルダフルパス文字列をエクセルシートから受け寄る
@@ -257,7 +265,3 @@ def excelIO_UDF_test(srcExcel,row, col):
     sheet = wb.sheets['debug_log']
 
     sheet.cells(row, col).value = excelIO_UDF_test.__name__
-
-
-
-
