@@ -38,6 +38,10 @@ def expandFolderTree_from_BranchTip(root, col):
     lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
     branchIndex = lst_end
 
+    #data.lst_expandFolderTreeTarget.append(root)
+    #inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, data.lst_expandFolderTreeTarget[0])
+    #inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=1, col=col,
+    #                                        outval=data.lst_expandFolderTreeTarget[0])
     while branchIndex > 0:
 
         ret_expandFullPath = expandFolderTree_for_OneBranch(data.lst_branch[branchIndex], branchIndex)
@@ -45,7 +49,8 @@ def expandFolderTree_from_BranchTip(root, col):
         #生成したフルパスを追加
         data.lst_expandFolderTreeTarget.append(ret_expandFullPath)
         #inerfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
-        inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=col, outval=ret_expandFullPath)
+        inerfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=col,
+                                                 outval=ret_expandFullPath)
         rowDownCnt = rowDownCnt - 1
 
         #次のブラチのフルパス作成のための変数設定
@@ -56,14 +61,20 @@ def expandFolderTree_from_BranchTip(root, col):
 ########################################################
 def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     # ブランチ名
-    work_branch = TipBranch
     work_branchIndex = branchIndex
-    dummyRet, dummyMark, topPos = getPostionOfHoraizonalBar(work_branch)
 
     expandFullPath = ''
     before_branchMarkPos = -1  # 負数で、初期値を表す
 
-    #work_lst_branch = data.lst_branch[work_branchIndex]
+    # パスの末尾
+    work_lst_branch = data.lst_branch[work_branchIndex]
+    curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
+    expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
+    result, mark, pos = getPostionOfHoraizonalBar(expandFullPath)
+    if result == True:
+        expandFullPath = expandFullPath[pos + 1:]
+    before_branchMarkPos = curr_branchMarkPos
+    work_branchIndex = work_branchIndex - 1
 
     # ブランチにパスを付加していく
     while work_branchIndex >= 0:
@@ -71,16 +82,16 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
         work_lst_branch = data.lst_branch[work_branchIndex]
         curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
 
-        if work_branchIndex == branchIndex:
-            # 最初の一回目（パスの末尾）
-            expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
-        else:
-            if curr_branchMarkPos < before_branchMarkPos:
-                # 一つ上の改装
-                upperBranch = work_lst_branch[curr_branchMarkPos + 1:]
-                expandFullPath = upperBranch + '\\' + expandFullPath
+        if curr_branchMarkPos < before_branchMarkPos:
+            # 一つ上の改装
+            upperBranch = work_lst_branch[curr_branchMarkPos + 1:]
 
-        before_branchMarkPos = curr_branchMarkPos
+            result, mark, pos = getPostionOfHoraizonalBar(upperBranch)
+            if result == True:
+                upperBranch = upperBranch[pos + 1:]
+
+            expandFullPath = upperBranch + '\\' + expandFullPath
+            before_branchMarkPos = curr_branchMarkPos
 
         work_branchIndex = work_branchIndex - 1
 
