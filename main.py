@@ -3,6 +3,8 @@
 # Shift+F10 を押して実行するか、ご自身のコードに置き換えてください。
 # Shift を2回押す を押すと、クラス/ファイル/ツールウィンドウ/アクション/設定を検索します。
 
+import xlwings as xlw
+
 #import folderTreeControl as fldrctrl
 
 def print_hi(name):
@@ -20,6 +22,8 @@ if __name__ == '__main__':
     #fldrctrl.getFolderTree(root="c:\\")
 
     #fldrctrl.getFolderFullpath(root="C:\\sourcrcode")
+
+    xlw.serve()
 
 
 # PyCharm のヘルプは https://www.jetbrains.com/help/pycharm/ を参照してください
