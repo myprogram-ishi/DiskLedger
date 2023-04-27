@@ -103,6 +103,7 @@ def excelIO_UDF_expandFolderTree(srcExcel= None, srcSheet= None, dstSheet= None,
 ########################################################
 #
 ########################################################
+offsetResultRow = 5
 @xlw.func
 def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=None):
 
@@ -130,14 +131,29 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         lst_work_expandFolderTreeTarget = data.lst_expandFolderTreeTarget
 
     col = 2
-    sheet_result.cells(1, col).value = len(lst_work_expandFolderTreeBase)
-    for row, item in enumerate(lst_work_expandFolderTreeBase, 1):
-        sheet_result.cells(row + 4, col).value = item
+    foundCount = 0
+    sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeBase)
+    #展開したフルパスをシートに記録
+    for row, item in enumerate(lst_work_expandFolderTreeBase):
+        sheet_result.cells(row + offsetResultRow, col).value = item
+
+        # ドライブ名は無視して、比較する
+        #drive = item.find(':\\')
+        #if drive > 0:
+        #    item = item[drive+2:]
+        # 検索するフォルダが含まれているかどうかをここで判定する。
+        if item in lst_work_expandFolderTreeTarget:
+            sheet_result.cells(row + offsetResultRow, 1).value = '〇'
+            foundCount = foundCount + 1
+        else:
+            sheet_result.cells(row + offsetResultRow, 1).value = '×'
+
+    sheet_result.cells(1, 2).value = foundCount
 
     col = 3
-    sheet_result.cells(1, col).value = len(lst_work_expandFolderTreeTarget)
-    for row, item in enumerate(lst_work_expandFolderTreeTarget, 1):
-        sheet_result.cells(row + 4, col).value = item
+    sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeTarget)
+    for row, item in enumerate(lst_work_expandFolderTreeTarget):
+        sheet_result.cells(row + offsetResultRow, col).value = item
 
 ##########################################################################################
 def debug():
