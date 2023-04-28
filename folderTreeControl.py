@@ -42,10 +42,11 @@ def expandFolderTree_from_BranchTip(root, col):
     wb = xlw.Book(data.currentExcel)
     macro = wb.macro(data.xlInterface + '.' + 'getFullpathWriteStartRowForFileCount')
     destRow = macro()
-    if destRow > rowDownCnt:
-        rowOffset  = rowDownCnt + 1
-    else:
-        rowOffset = 0
+    rowOffset = destRow - 1
+    #if destRow > rowDownCnt:
+    #    rowOffset  = rowDownCnt + 1
+    #else:
+    #    rowOffset = 0
 
     while branchIndex > 0:
 
@@ -311,7 +312,8 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
     else:
         branch = '└' if is_last else '├'
         #print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
-        data.lst_generateToAddFolderTree.append('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
+        data.lst_generateToAddFolderTree.append(
+            '{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
 
     # 下の階層のパスを取得
     paths = [p for p in glob.glob(path+'/*') if os.path.isdir(p)]
