@@ -1,6 +1,7 @@
 import os
 import pathlib
 import glob
+import xlwings as xlw
 
 import data
 import interfaceExcel
@@ -34,14 +35,18 @@ def expandFolderTree_from_BranchTip(root, col):
 
     interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_BranchTip.__name__)
 
-    rowDownCnt = len(data.lst_branch)   #エクセルシート↑の行番号なので、１から配列要素お個数分。
+    rowDownCnt = len(data.lst_branch)  # エクセルシート↑の行番号なので、１から配列要素お個数分。
     lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
     branchIndex = lst_end
 
-    #data.lst_expandFolderTreeTarget.append(root)
-    #interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, data.lst_expandFolderTreeTarget[0])
-    #interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=1, col=col,
-    #                                        outval=data.lst_expandFolderTreeTarget[0])
+    wb = xlw.Book(data.currentExcel)
+    macro = wb.macro(data.xlInterface + '.' + 'getFullpathWriteStartRowForFileCount')
+    destRow = macro()
+    if destRow > rowDownCnt:
+        rowOffset  = rowDownCnt + 1
+    else:
+        rowOffset = 0
+
     while branchIndex > 0:
 
         ret_expandFullPath = expandFolderTree_for_OneBranch(data.lst_branch[branchIndex], branchIndex)
@@ -49,8 +54,8 @@ def expandFolderTree_from_BranchTip(root, col):
         #生成したフルパスを追加
         data.lst_expandFolderTreeTarget.append(ret_expandFullPath)
         #interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
-        interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand, row=rowDownCnt, col=col,
-                                                 outval=ret_expandFullPath)
+        interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand,
+                                                  row=(rowDownCnt + rowOffset), col=col, outval=ret_expandFullPath)
         rowDownCnt = rowDownCnt - 1
 
         #次のブラチのフルパス作成のための変数設定
