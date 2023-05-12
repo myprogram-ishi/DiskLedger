@@ -21,6 +21,9 @@ def expandFolderTree(root, col):
             break
 
         index = index + 1
+        #配列の末端まで到達したらループを抜ける
+        if index >= len(data.lst_branch):
+            break
 
     branchNum = len(data.lst_branch)
 

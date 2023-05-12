@@ -13,7 +13,7 @@ shtName_pyDbgLog = 'python_log'
 shtName_Expand = r'Expand'
 
 treeTop = ':\\'
-searchRootFolder = 'SPB_17.2'
+searchRootFolder = '旅日記'   #'SPB_17.2'
 
 xlInterface = 'Module_interfacePython'
 
