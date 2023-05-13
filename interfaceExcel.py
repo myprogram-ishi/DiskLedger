@@ -119,6 +119,9 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
     data.lst_searchResults.clear()
 
     if searchTopFolder != None:
+
+        sheet_result.cells(1, 5).value = 'A'
+
     #検索開始フォルダが指定されている場合は、そのフォルダ名でリストにフィルタをかけて抽出する
         lst_work_expandFolderTreeBase \
             = [item for item in data.lst_expandFolderTreeBase if searchTopFolder in item]
@@ -126,6 +129,9 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         lst_work_expandFolderTreeTarget \
             = [item for item in data.lst_expandFolderTreeTarget if searchTopFolder in item]
     else:
+
+        sheet_result.cells(1, 5).value = 'B'
+
     #フォルダ指定の無い場合は、そのまま使用する
         lst_work_expandFolderTreeBase = data.lst_expandFolderTreeBase
         lst_work_expandFolderTreeTarget = data.lst_expandFolderTreeTarget
@@ -133,14 +139,17 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
     col = 2
     foundCount = 0
     sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeBase)
+    sheet_result.cells(3, col).value = len(lst_work_expandFolderTreeTarget)
+
     #展開したフルパスをシートに記録
     for row, item in enumerate(lst_work_expandFolderTreeBase):
+
         sheet_result.cells(row + offsetResultRow, col).value = item
 
         # ドライブ名は無視して、比較する
-        #drive = item.find(':\\')
-        #if drive > 0:
-        #    item = item[drive+2:]
+        drive = item.find(':\\')
+        if drive > 0:
+            item = item[drive+2:]
         # 検索するフォルダが含まれているかどうかをここで判定する。
         if item in lst_work_expandFolderTreeTarget:
             sheet_result.cells(row + offsetResultRow, 1).value = '〇'
