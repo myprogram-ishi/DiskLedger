@@ -103,7 +103,7 @@ def excelIO_UDF_expandFolderTree(srcExcel= None, srcSheet= None, dstSheet= None,
 ########################################################
 #
 ########################################################
-offsetResultRow = 5
+offsetResultRow = 10
 @xlw.func
 def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=None):
 
@@ -154,8 +154,13 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         if item in lst_work_expandFolderTreeTarget:
             sheet_result.cells(row + offsetResultRow, 1).value = '〇'
             foundCount = foundCount + 1
+            colorPtrn = 1
         else:
             sheet_result.cells(row + offsetResultRow, 1).value = '×'
+            colorPtrn = 0
+
+        macro = wb.macro(data.xlInterface + '.' + 'setCellInterior')
+        macro(resultSheet, row + offsetResultRow, 1, colorPtrn)
 
     sheet_result.cells(1, 2).value = foundCount
 
