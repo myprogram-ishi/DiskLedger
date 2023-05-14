@@ -154,10 +154,10 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         if item in lst_work_expandFolderTreeTarget:
             sheet_result.cells(row + offsetResultRow, 1).value = '〇'
             foundCount = foundCount + 1
-            colorPtrn = 1
+            colorPtrn = 1   #背景[青]　文字[白]
         else:
             sheet_result.cells(row + offsetResultRow, 1).value = '×'
-            colorPtrn = 0
+            colorPtrn = 0   #背景[赤]　文字[白]
 
         macro = wb.macro(data.xlInterface + '.' + 'setCellInterior')
         macro(resultSheet, row + offsetResultRow, 1, colorPtrn)
@@ -168,6 +168,8 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
     sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeTarget)
     for row, item in enumerate(lst_work_expandFolderTreeTarget):
         sheet_result.cells(row + offsetResultRow, col).value = item
+
+    return offsetResultRow
 
 ##########################################################################################
 def debug():
