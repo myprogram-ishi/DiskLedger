@@ -120,8 +120,6 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
 
     if searchTopFolder != None:
 
-        sheet_result.cells(1, 5).value = 'A'
-
     #検索開始フォルダが指定されている場合は、そのフォルダ名でリストにフィルタをかけて抽出する
         lst_work_expandFolderTreeBase \
             = [item for item in data.lst_expandFolderTreeBase if searchTopFolder in item]
@@ -130,16 +128,21 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
             = [item for item in data.lst_expandFolderTreeTarget if searchTopFolder in item]
     else:
 
-        sheet_result.cells(1, 5).value = 'B'
-
     #フォルダ指定の無い場合は、そのまま使用する
         lst_work_expandFolderTreeBase = data.lst_expandFolderTreeBase
         lst_work_expandFolderTreeTarget = data.lst_expandFolderTreeTarget
 
     col = 2
+    result_item_row = 2
+
+    #比較フォルダ数、比較結果表示
+    sheet_result.cells(result_item_row, col).value = len(lst_work_expandFolderTreeBase)
+    result_item_row = result_item_row + 1
+    sheet_result.cells(result_item_row, col).value = len(lst_work_expandFolderTreeTarget)
+    result_item_row = result_item_row + 1
+
     foundCount = 0
-    sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeBase)
-    sheet_result.cells(3, col).value = len(lst_work_expandFolderTreeTarget)
+    notFoundCount = 0
 
     #展開したフルパスをシートに記録
     for row, item in enumerate(lst_work_expandFolderTreeBase):
@@ -158,14 +161,20 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         else:
             sheet_result.cells(row + offsetResultRow, 1).value = '×'
             colorPtrn = 0   #背景[赤]　文字[白]
+            notFoundCount = notFoundCount + 1
 
         macro = wb.macro(data.xlInterface + '.' + 'setCellInterior')
         macro(resultSheet, row + offsetResultRow, 1, colorPtrn)
 
-    sheet_result.cells(1, 2).value = foundCount
+    #比較結果の表示
+    #見つかったフォルダ数の数（バックアップ済みフォルダ数）
+    sheet_result.cells(result_item_row, 2).value = foundCount
+    result_item_row = result_item_row + 1
+    #見つからなかったフォルダ数の数（バックアップ未済みフォルダ数）
+    sheet_result.cells(result_item_row, 2).value = notFoundCount
 
     col = 3
-    sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeTarget)
+    #sheet_result.cells(2, col).value = len(lst_work_expandFolderTreeTarget)
     for row, item in enumerate(lst_work_expandFolderTreeTarget):
         sheet_result.cells(row + offsetResultRow, col).value = item
 
