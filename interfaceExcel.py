@@ -3,6 +3,7 @@ import xlwings as xlw
 import pandas as pdFldr
 import data
 import folderTreeControl
+import pandas as pd
 
 ########################################################
 #      初期化　変数クリアなど
@@ -292,6 +293,41 @@ def excelIO_UDF_outputdebugLog(srcExcel=None, shtName=None, row=1, col=1, outval
     wb = xlw.Book(outputExcel)
     sheet_pyLog = wb.sheets[shtName]
     sheet_pyLog.cells(row, col).value = outval
+
+@xlw.func
+def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderNane= None):
+
+    if srcExcel != '' and srcExcel != None:
+        data.currentExcel = srcExcel
+
+    if srcSheet != '' and srcSheet != None:
+        data.shtName_base = srcSheet
+
+    if desstFolderNane != '' and desstFolderNane != None:
+        desstFolderNane = '旅日記'
+
+    excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, excelIO_UDF_expandFolderTree.__name__)
+
+
+    wb = xlw.Book(data.currentExcel)
+    ws = wb.sheets[srcSheet]
+
+    #input_book = pd.ExcelFile(r'検索_python.xlsm')
+    #df_sheet = input_book.perse(srcSheet)
+    ## df_sheet = pd.read_excel("検索_python.xlsm", sheet_name=0)
+    ##  #df_sheet = pd.read_excel("比較結果.xlsx", sheet_name=0)
+
+    df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame).value
+    #df_sheet_T = df_sheet.T
+
+    ### https://posipochi.com/2021/07/02/python-xlwings-how-to/#toc15
+
+    return df_sheet.keys()
+
+
+    #wb = xlw.Book(data.currentExcel)
+
+
 
 
 @xlw.func
