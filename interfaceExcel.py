@@ -299,6 +299,8 @@ def excelIO_UDF_outputdebugLog(srcExcel=None, shtName=None, row=1, col=1, outval
 def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderNane= None):
 
     lst_diskID = []
+    lst_posDesstFolder = []
+    lst_error = []
 
     if srcExcel != '' and srcExcel != None:
         data.currentExcel = srcExcel
@@ -310,7 +312,6 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
         desstFolderNane = '旅日記'
 
     excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, excelIO_UDF_expandFolderTree.__name__)
-
 
     #wb = xlw.Book(data.currentExcel)
     wb = xlw.Book.caller()
@@ -328,8 +329,24 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     ### https://posipochi.com/2021/07/02/python-xlwings-how-to/#toc15
 
     lst_diskID = list(df_sheet.columns)
+    series_sheet = df_sheet[lst_diskID[1]]
+    series_sheet.to_csv(os.path.join(data.csvOutoutFolder, r'series_sheet.csv'))
 
-    return 0    #df_sheet[lst_diskID[0]]
+    for index, diskID in enumerate(lst_diskID):
+        #series_sheet = df_sheet[diskID]
+        #posDesstFolder = series_sheet.where(r'2023' in series_sheet).first_valid_index()
+        #lst_posDesstFolder.append(lst_diskID[index])
+
+        try:
+            posDesstFolder = df_sheet[df_sheet[lst_diskID[index]].str.contains('2023')]
+        except ValueError as error:
+            #print('ValueError')
+            #lst_error.append(index)
+            break
+
+        #lst_posDesstFolder.append(posDesstFolder)
+
+    return 0
     #wb = xlw.Book(data.currentExcel)
 
 
