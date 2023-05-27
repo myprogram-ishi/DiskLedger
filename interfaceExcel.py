@@ -329,24 +329,40 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     ### https://posipochi.com/2021/07/02/python-xlwings-how-to/#toc15
 
     lst_diskID = list(df_sheet.columns)
-    series_sheet = df_sheet[lst_diskID[1]]
-    series_sheet.to_csv(os.path.join(data.csvOutoutFolder, r'series_sheet.csv'))
-
+    a = 0
     for index, diskID in enumerate(lst_diskID):
         #series_sheet = df_sheet[diskID]
         #posDesstFolder = series_sheet.where(r'2023' in series_sheet).first_valid_index()
         #lst_posDesstFolder.append(lst_diskID[index])
 
         try:
-            posDesstFolder = df_sheet[df_sheet[lst_diskID[index]].str.contains('2023')]
+            if index > 0:
+                ret = df_sheet[lst_diskID[index]].str.contains('旅日記')
+                if ret == True:
+                    outFileName = r'series_sheet__' + str(index) + '.csv'
+                else:
+                    outFileName = r'series_sheet_' + str(index) + '.csv'
+
+                series_sheet = df_sheet[lst_diskID[index]]
+                series_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+
+                df_ret = df_sheet[df_sheet[lst_diskID[index]].str.contains('diff_FolderTree')]
+                df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret.csv'))
+                lst_posDesstFolder.append(index)
+
+
+                #break
         except ValueError as error:
             #print('ValueError')
             #lst_error.append(index)
+            a = a + 1
+        except AttributeError as error:
+            a = a + 100
             break
 
         #lst_posDesstFolder.append(posDesstFolder)
 
-    return 0
+    return lst_posDesstFolder
     #wb = xlw.Book(data.currentExcel)
 
 
