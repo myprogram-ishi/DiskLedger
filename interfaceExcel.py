@@ -1,4 +1,5 @@
 
+import os
 import xlwings as xlw
 import pandas as pdFldr
 import data
@@ -297,6 +298,8 @@ def excelIO_UDF_outputdebugLog(srcExcel=None, shtName=None, row=1, col=1, outval
 @xlw.func
 def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderNane= None):
 
+    lst_diskID = []
+
     if srcExcel != '' and srcExcel != None:
         data.currentExcel = srcExcel
 
@@ -309,7 +312,8 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, excelIO_UDF_expandFolderTree.__name__)
 
 
-    wb = xlw.Book(data.currentExcel)
+    #wb = xlw.Book(data.currentExcel)
+    wb = xlw.Book.caller()
     ws = wb.sheets[srcSheet]
 
     #input_book = pd.ExcelFile(r'検索_python.xlsm')
@@ -317,17 +321,16 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     ## df_sheet = pd.read_excel("検索_python.xlsm", sheet_name=0)
     ##  #df_sheet = pd.read_excel("比較結果.xlsx", sheet_name=0)
 
-    df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame).value
-    #df_sheet_T = df_sheet.T
-
+    df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame, index=False).value
+    df_sheet.to_csv(os.path.join(data.csvOutoutFolder, r'df_sheet.csv'))
+    df_sheet_T = df_sheet.T
+    df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, r'df_sheet_T.csv'))
     ### https://posipochi.com/2021/07/02/python-xlwings-how-to/#toc15
 
-    return df_sheet.keys()
+    lst_diskID = list(df_sheet.columns)
 
-
+    return 0    #df_sheet[lst_diskID[0]]
     #wb = xlw.Book(data.currentExcel)
-
-
 
 
 @xlw.func
