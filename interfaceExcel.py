@@ -5,7 +5,7 @@ import pandas as pdFldr
 import data
 import folderTreeControl
 import pandas as pd
-
+import numpy as np
 ########################################################
 #      初期化　変数クリアなど
 ########################################################
@@ -322,43 +322,57 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     ## df_sheet = pd.read_excel("検索_python.xlsm", sheet_name=0)
     ##  #df_sheet = pd.read_excel("比較結果.xlsx", sheet_name=0)
 
-    df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame, index=False).value
+    "エクセルシートのデータを取得する"
+    #df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame, index=False).value
+    df_sheet = ws.range(ws.cells(1, 1), ws.cells(255, 5000)).options(pd.DataFrame, index=False).value
+    #ディスクIDおまとめた、リストを取得
+    lst_diskID = [x for x in list(df_sheet.columns) if x != None]
+
     df_sheet.to_csv(os.path.join(data.csvOutoutFolder, r'df_sheet.csv'))
     df_sheet_T = df_sheet.T
-    df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, r'df_sheet_T.csv'))
+    #df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, r'df_sheet_T.csv'))
     ### https://posipochi.com/2021/07/02/python-xlwings-how-to/#toc15
 
-    lst_diskID = list(df_sheet.columns)
     a = 0
     for index, diskID in enumerate(lst_diskID):
         #series_sheet = df_sheet[diskID]
         #posDesstFolder = series_sheet.where(r'2023' in series_sheet).first_valid_index()
         #lst_posDesstFolder.append(lst_diskID[index])
 
-        try:
-            if index > 0:
-                ret = df_sheet[lst_diskID[index]].str.contains('旅日記')
-                if ret == True:
-                    outFileName = r'series_sheet__' + str(index) + '.csv'
-                else:
-                    outFileName = r'series_sheet_' + str(index) + '.csv'
+        #outFileName = r'df_sheet_TT_' + str(index) + '.csv'
+        #df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+
+        if index > 0:
+            try:
+                outFileName = r'series_sheet1_' + str(diskID) + '_' + str(index) + '.csv'
+
+                #ret = df_sheet[lst_diskID[index]].str.contains('10')
+                #if ret == True:
+                #    outFileName = r'series_sheet0_' + str(index) + '.csv'
+                #    df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                #else:
+                #    outFileName = r'series_sheet1_' + str(index) + '.csv'
+                #    df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
                 series_sheet = df_sheet[lst_diskID[index]]
                 series_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
-                df_ret = df_sheet[df_sheet[lst_diskID[index]].str.contains('diff_FolderTree')]
-                df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret.csv'))
-                lst_posDesstFolder.append(index)
+                #df_ret = df_sheet[df_sheet[lst_diskID[index]].str.contains('diff_FolderTree')]
+                #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret.csv'))
+                #lst_posDesstFolder.append(index)
 
-
-                #break
-        except ValueError as error:
-            #print('ValueError')
-            #lst_error.append(index)
-            a = a + 1
-        except AttributeError as error:
-            a = a + 100
-            break
+                    #break
+            except ValueError as error:
+                outFileName = r'series_sheet3_' + str(index) + '.csv'
+                df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                #print('ValueError')
+                #lst_error.append(index)
+                a = a + 1
+            except AttributeError as error:
+                outFileName = r'series_sheet4_' + str(index) + '.csv'
+                df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                a = a + 100
+                break
 
         #lst_posDesstFolder.append(posDesstFolder)
 
