@@ -324,7 +324,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
     "エクセルシートのデータを取得する"
     #df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame, index=False).value
-    df_sheet = ws.range(ws.cells(1, 1), ws.cells(255, 5000)).options(pd.DataFrame, index=False).value
+    df_sheet = ws.range(ws.cells(1, 1), ws.cells(5000, 255)).options(pd.DataFrame, index=False).value
     #ディスクIDおまとめた、リストを取得
     lst_diskID = [x for x in list(df_sheet.columns) if x != None]
 
@@ -343,8 +343,27 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
         #df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
         if index > 0:
+
+            outFileName = r'df_sheet_org_' + str(index) + '_' + str(diskID) + '.csv'
+            df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+
             try:
                 outFileName = r'series_sheet1_' + str(diskID) + '_' + str(index) + '.csv'
+
+                df_ret_dropna = df_sheet.dropna(how='all')
+                df_ret_dropna.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
+                df_ret = df_ret_dropna[str(diskID)].str.contains(desstFolderNane)
+                df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
+
+                df_ret = df_ret_dropna[df_ret_dropna.diskID == True]
+                df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna_True.csv'))
+
+                #df_ret = df_sheet[str(diskID)].str.contains(desstFolderNane)
+                #df_ret_dropna = df_ret.dropna(how='all')
+                #df_ret_dropna.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
+
+                #df_ret = df_sheet[df_sheet[str(diskID)].str.endswith('10')]
+                #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret.csv'))
 
                 #ret = df_sheet[lst_diskID[index]].str.contains('10')
                 #if ret == True:
@@ -354,8 +373,8 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 #    outFileName = r'series_sheet1_' + str(index) + '.csv'
                 #    df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
-                series_sheet = df_sheet[lst_diskID[index]]
-                series_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                #series_sheet = df_sheet[lst_diskID[index]]
+                #series_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
                 #df_ret = df_sheet[df_sheet[lst_diskID[index]].str.contains('diff_FolderTree')]
                 #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret.csv'))
@@ -363,18 +382,16 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
                     #break
             except ValueError as error:
-                outFileName = r'series_sheet3_' + str(index) + '.csv'
-                df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                outFileName = r'ValueError_' + str(index) + '_' + str(diskID) + '.csv'
+                df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
                 #print('ValueError')
                 #lst_error.append(index)
                 a = a + 1
             except AttributeError as error:
-                outFileName = r'series_sheet4_' + str(index) + '.csv'
-                df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                outFileName = r'AttributeError_' + str(index) + '_' + str(diskID) + '.csv'
+                df_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
                 a = a + 100
                 break
-
-        #lst_posDesstFolder.append(posDesstFolder)
 
     return lst_posDesstFolder
     #wb = xlw.Book(data.currentExcel)
