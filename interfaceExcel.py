@@ -6,6 +6,7 @@ import data
 import folderTreeControl
 import pandas as pd
 import numpy as np
+import csv
 ########################################################
 #      初期化　変数クリアなど
 ########################################################
@@ -325,6 +326,12 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     "エクセルシートのデータを取得する"
     #df_sheet = ws.range('A1:AZ5000').options(pd.DataFrame, index=False).value
     df_sheet = ws.range(ws.cells(1, 1), ws.cells(5000, 255)).options(pd.DataFrame, index=False).value
+
+    #df_sheet = df_sheet.drop('作成日', axis=0)
+    #df_sheet = df_sheet.drop('ラベルファイル名', axis=0)
+    #df_sheet = df_sheet.drop('メモ', axis=0)
+    df_sheet = df_sheet.drop(df_sheet.index[[0, 1, 2]])
+
     #ディスクIDおまとめた、リストを取得
     lst_diskID = [x for x in list(df_sheet.columns) if x != None]
 
@@ -334,6 +341,8 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     ### https://posipochi.com/2021/07/02/python-xlwings-how-to/#toc15
 
     a = 0
+    df_True = pd.DataFrame
+    dict_posDesstFolder = {}
     for index, diskID in enumerate(lst_diskID):
         #series_sheet = df_sheet[diskID]
         #posDesstFolder = series_sheet.where(r'2023' in series_sheet).first_valid_index()
@@ -348,15 +357,23 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
             df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
             try:
-                outFileName = r'series_sheet1_' + str(diskID) + '_' + str(index) + '.csv'
+                outFileName = r'series_sheet1_' + str(diskID) + '.csv'
 
                 df_ret_dropna = df_sheet.dropna(how='all')
-                df_ret_dropna.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
-                df_ret = df_ret_dropna[str(diskID)].str.contains(desstFolderNane)
-                df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
+                #df_ret_dropna.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
+                #df_ret = df_ret_dropna[str(diskID)].str.contains(desstFolderNane)
+                #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
 
                 df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(desstFolderNane, na=False)]
-                df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna_True.csv'))
+                df_ret= df_ret.dropna(how='all')
+                df_ret.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+
+                lst_posDesstFolder.append(df_ret.index.values)
+
+                dict_posDesstFolder[diskID] = df_ret.index.values
+
+                #df_True.append(df_ret)
+                #df_True.to_csv(os.path.join(data.csvOutoutFolder, 'df_True.csv'))
 
                 #df_ret = df_ret_dropna[df_ret_dropna.diskID == True]
                 #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna_True.csv'))
@@ -396,7 +413,14 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 a = a + 100
                 break
 
+    with open(os.path.join(data.csvOutoutFolder, 'lst_posDesstFolder.csv'), 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(lst_posDesstFolder)
+
+    #df_True.to_csv(os.path.join(data.csvOutoutFolder, 'df_True.csv'))
+
     return lst_posDesstFolder
+    #return dict_posDesstFolder
     #wb = xlw.Book(data.currentExcel)
 
 
