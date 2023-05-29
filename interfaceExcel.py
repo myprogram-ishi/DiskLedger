@@ -355,8 +355,11 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 df_ret = df_ret_dropna[str(diskID)].str.contains(desstFolderNane)
                 df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
 
-                df_ret = df_ret_dropna[df_ret_dropna.diskID == True]
+                df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(desstFolderNane, na=False)]
                 df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna_True.csv'))
+
+                #df_ret = df_ret_dropna[df_ret_dropna.diskID == True]
+                #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna_True.csv'))
 
                 #df_ret = df_sheet[str(diskID)].str.contains(desstFolderNane)
                 #df_ret_dropna = df_ret.dropna(how='all')
