@@ -1,5 +1,6 @@
 
 import os
+import openpyxl
 import xlwings as xlw
 import pandas as pdFldr
 import data
@@ -370,6 +371,16 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
                 lst_posDesstFolder.append(df_ret.index.values)
 
+                # ハイパーリンク
+                destRow = lst_posDesstFolder[len(lst_posDesstFolder) - 1]
+                destHyperLink = '"' + srcExcel + '#' + srcSheet + '!' + chr(index + 64) + '384' + '"' #str(destRow)
+                srcHyperLink = '"' + chr(index + 64) + '1' + '"'
+                wbHyp = openpyxl.Workbook()
+                wsHyp = wbHyp.active
+                wsHyp[srcHyperLink].hyperlink = destHyperLink
+
+                #ws.cells(1,index).add_hyperlink(destHyperLink)
+
                 dict_posDesstFolder[diskID] = df_ret.index.values
 
                 #df_True.append(df_ret)
@@ -419,7 +430,8 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
     #df_True.to_csv(os.path.join(data.csvOutoutFolder, 'df_True.csv'))
 
-    return lst_posDesstFolder
+    #return lst_posDesstFolder
+    return srcHyperLink + ' / ' + destHyperLink
     #return dict_posDesstFolder
     #wb = xlw.Book(data.currentExcel)
 
