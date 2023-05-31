@@ -352,7 +352,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
         #outFileName = r'df_sheet_TT_' + str(index) + '.csv'
         #df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
-        if index > 1:
+        if index > 0:
 
             outFileName = r'df_sheet_org_' + str(index) + '_' + str(diskID) + '.csv'
             df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
@@ -372,19 +372,20 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 lst_posDesstFolder.append(df_ret.index.values)
 
                 # ハイパーリンク
+                adjust_df_to_row = 2    #データフレームでの行番号と、エクセルシートでの行番号の調整値（オフセット）
                 destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1])
-                destHyperLink = srcExcel + '#' + srcSheet + '!' + chr(index + 64) + str(destRow) #str(destRow)
+                destHyperLink = srcExcel + '#' + srcSheet + '!' + chr(index + 65) + str(destRow + adjust_df_to_row) #str(destRow)
                 srcHyperLink = '"' + chr(index + 64) + '1' + '"'
                 wbHyp = openpyxl.Workbook()
                 wsHyp = wbHyp.active
                 #wsHyp[srcHyperLink].hyperlink = destHyperLink
                 #ws.cells(1,index).add_hyperlink(destHyperLink)
 
-                ws.cells(1, index).add_hyperlink(destHyperLink, diskID)
+                ws.cells(1, index + 1).add_hyperlink(destHyperLink, diskID)
 
-                ws.cells(1, index).api.Font.ColorIndex = 5
-                ws.cells(1, index).api.Font.Size = 20
-                ws.cells(1, index).api.Font.Bold = True
+                ws.cells(1, index + 1).api.Font.ColorIndex = 5
+                ws.cells(1, index + 1).api.Font.Size = 20
+                ws.cells(1, index + 1).api.Font.Bold = True
 
                 dict_posDesstFolder[diskID] = df_ret.index.values
 
