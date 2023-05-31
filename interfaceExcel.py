@@ -352,7 +352,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
         #outFileName = r'df_sheet_TT_' + str(index) + '.csv'
         #df_sheet_T.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
-        if index > 0:
+        if index > 1:
 
             outFileName = r'df_sheet_org_' + str(index) + '_' + str(diskID) + '.csv'
             df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
@@ -365,21 +365,26 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 #df_ret = df_ret_dropna[str(diskID)].str.contains(desstFolderNane)
                 #df_ret.to_csv(os.path.join(data.csvOutoutFolder, r'df_ret_dropna.csv'))
 
-                df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(desstFolderNane, na=False)]
+                df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(r'旅日記', na=False)]
                 df_ret= df_ret.dropna(how='all')
                 df_ret.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
 
                 lst_posDesstFolder.append(df_ret.index.values)
 
                 # ハイパーリンク
-                destRow = lst_posDesstFolder[len(lst_posDesstFolder) - 1]
-                destHyperLink = '"' + srcExcel + '#' + srcSheet + '!' + chr(index + 64) + '384' + '"' #str(destRow)
+                destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1])
+                destHyperLink = srcExcel + '#' + srcSheet + '!' + chr(index + 64) + str(destRow) #str(destRow)
                 srcHyperLink = '"' + chr(index + 64) + '1' + '"'
                 wbHyp = openpyxl.Workbook()
                 wsHyp = wbHyp.active
-                wsHyp[srcHyperLink].hyperlink = destHyperLink
-
+                #wsHyp[srcHyperLink].hyperlink = destHyperLink
                 #ws.cells(1,index).add_hyperlink(destHyperLink)
+
+                ws.cells(1, index).add_hyperlink(destHyperLink, diskID)
+
+                ws.cells(1, index).api.Font.ColorIndex = 5
+                ws.cells(1, index).api.Font.Size = 20
+                ws.cells(1, index).api.Font.Bold = True
 
                 dict_posDesstFolder[diskID] = df_ret.index.values
 
@@ -431,9 +436,10 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     #df_True.to_csv(os.path.join(data.csvOutoutFolder, 'df_True.csv'))
 
     #return lst_posDesstFolder
-    return srcHyperLink + ' / ' + destHyperLink
+    #return srcHyperLink + r' / ' + destHyperLink
     #return dict_posDesstFolder
     #wb = xlw.Book(data.currentExcel)
+    return 0
 
 
 @xlw.func
