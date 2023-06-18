@@ -8,6 +8,8 @@ import folderTreeControl
 import pandas as pd
 import numpy as np
 import csv
+
+
 ########################################################
 #      初期化　変数クリアなど
 ########################################################
@@ -382,6 +384,59 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
     return 0
 
+@xlw.func
+def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCount = None):
+
+#エクセルシート状の列番号
+    col_fileCnt = 2     #ファイル数の列
+    col_folder = 3   #フォルダパスの列絵
+
+    if srcSheet != '' and srcSheet != None:
+        data.shtName_base = srcSheet
+
+    if topRow == None:
+        topRow = 1
+
+    if rowCount == None:
+        rowCount = 1000
+
+    wb = xlw.Book.caller()
+    ws = wb.sheets[srcSheet]
+
+    df_temp = pd.DataFrame([[ws.cells(topRow, col_fileCnt).value, ws.cells(topRow, col_folder).value]],
+                       columns=data.cols_dfFileCnt)
+
+    data.df_fileCntByFolder.append(df_temp)
+    #data.df_fileCntByFolder.columns = ['path', 'fileCnt']
+
+    index = 1
+    #df_temp = pd.DataFrame([[ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]])
+    #df_fileCntByFolder.append(df_temp)
+
+    for index in range(1, rowCount):
+        temp_lst = [ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]
+
+        df_temp = pd.DataFrame(
+            [[ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]],
+            columns=data.cols_dfFileCnt)
+
+        data.df_fileCntByFolder = data.df_fileCntByFolder.append(df_temp)
+
+    data.df_fileCntByFolder.to_csv(os.path.join(data.csvOutoutFolder, r'df_fileCntByFolder.csv'))
+
+    data.df_fileCntByFolder = data.df_fileCntByFolder.sort_values('fileCnt', ascending=False)
+
+    return len(data.df_fileCntByFolder.index)
+
+@xlw.func
+def excelIO_UDF_df_fileCntByFolderItem(row, column):
+
+    if column == 0:
+        retValue = data.df_fileCntByFolder['path'].iloc[row]
+    elif column == 1:
+        retValue = data.df_fileCntByFolder['fileCnt'].iloc[row]
+
+    return retValue
 
 @xlw.func
 def excelIO_UDF_test(srcExcel,row, col):

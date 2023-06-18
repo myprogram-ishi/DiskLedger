@@ -1,8 +1,8 @@
 
+import pandas as pd
 ###############################
 #   文字列
 ###############################
-
 currentExcel = ''
 
 #エクセルシート名
@@ -25,6 +25,9 @@ getEndRowCout = 'getEndOfRowCount'
 strFunc = "[func]"
 
 indent_tree = " "
+
+cols_dfFileCnt = ['path', 'fileCnt']
+df_fileCntByFolder = pd.DataFrame(columns=cols_dfFileCnt)
 
 lst_generateToAddFolderTree = []
 lst_branch = []
