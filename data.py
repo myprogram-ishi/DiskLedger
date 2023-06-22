@@ -26,7 +26,7 @@ strFunc = "[func]"
 
 indent_tree = " "
 
-cols_dfFileCnt = ['path', 'fileCnt']
+cols_dfFileCnt = ['fileCnt', 'path']
 df_fileCntByFolder = pd.DataFrame(columns=cols_dfFileCnt)
 
 lst_generateToAddFolderTree = []

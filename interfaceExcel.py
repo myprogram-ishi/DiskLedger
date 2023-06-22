@@ -403,6 +403,9 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
     wb = xlw.Book.caller()
     ws = wb.sheets[srcSheet]
 
+   # データフレームを初期化
+    data.df_fileCntByFolder = pd.DataFrame(columns=data.cols_dfFileCnt)
+
     df_temp = pd.DataFrame([[ws.cells(topRow, col_fileCnt).value, ws.cells(topRow, col_folder).value]],
                        columns=data.cols_dfFileCnt)
 
@@ -414,7 +417,7 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
     #df_fileCntByFolder.append(df_temp)
 
     for index in range(1, rowCount):
-        temp_lst = [ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]
+        #temp_lst = [ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]
 
         df_temp = pd.DataFrame(
             [[ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]],
@@ -424,6 +427,11 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
 
     data.df_fileCntByFolder.to_csv(os.path.join(data.csvOutoutFolder, r'df_fileCntByFolder.csv'))
 
+    #'ファイル数'の列を整数型へ返還
+    data.df_fileCntByFolder['fileCnt'] = data.df_fileCntByFolder['fileCnt'].astype('int')
+    #しきい価を超えた行を抽出
+    data.df_fileCntByFolder = data.df_fileCntByFolder.loc[data.df_fileCntByFolder['fileCnt'] > 100]
+    #大きい順に並べ替え
     data.df_fileCntByFolder = data.df_fileCntByFolder.sort_values('fileCnt', ascending=False)
 
     return len(data.df_fileCntByFolder.index)
