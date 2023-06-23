@@ -385,7 +385,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     return 0
 
 @xlw.func
-def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCount = None):
+def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCount = None, fileCntUpperLimit = 0):
 
 #エクセルシート状の列番号
     col_fileCnt = 2     #ファイル数の列
@@ -399,6 +399,9 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
 
     if rowCount == None:
         rowCount = 1000
+
+    if fileCntUpperLimit == 0:
+        fileCntUpperLimit = 100
 
     wb = xlw.Book.caller()
     ws = wb.sheets[srcSheet]
@@ -430,7 +433,7 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
     #'ファイル数'の列を整数型へ返還
     data.df_fileCntByFolder['fileCnt'] = data.df_fileCntByFolder['fileCnt'].astype('int')
     #しきい価を超えた行を抽出
-    data.df_fileCntByFolder = data.df_fileCntByFolder.loc[data.df_fileCntByFolder['fileCnt'] > 100]
+    data.df_fileCntByFolder = data.df_fileCntByFolder.loc[data.df_fileCntByFolder['fileCnt'] > fileCntUpperLimit]
     #大きい順に並べ替え
     data.df_fileCntByFolder = data.df_fileCntByFolder.sort_values('fileCnt', ascending=False)
 
