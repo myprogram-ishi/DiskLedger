@@ -4,6 +4,7 @@
 # Shift を2回押す を押すと、クラス/ファイル/ツールウィンドウ/アクション/設定を検索します。
 
 import xlwings as xlw
+import interfaceExcel
 
 #import folderTreeControl as fldrctrl
 
@@ -19,6 +20,9 @@ if __name__ == '__main__':
     test = 'c:\\test'
 
     print(test)
+
+    interfaceExcel.excelIO_UDF_getWorkSheetToDataFrame(srcExcel='検索_python.xlsm', srcSheet='1996～2018', row_colName=9)
+
     #fldrctrl.getFolderTree(root="c:\\")
 
     #fldrctrl.getFolderFullpath(root="C:\\sourcrcode")

@@ -2,10 +2,11 @@
 import os
 import openpyxl
 import xlwings as xlw
-import pandas as pdFldr
+#import pandas as pdFldr
 import data
 import folderTreeControl
 import pandas as pd
+import pandas as pdExcel
 import numpy as np
 import csv
 
@@ -438,6 +439,25 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
     data.df_fileCntByFolder = data.df_fileCntByFolder.sort_values('fileCnt', ascending=False)
 
     return len(data.df_fileCntByFolder.index)
+
+
+@xlw.func
+def excelIO_UDF_getWorkSheetToDataFrame(srcExcel=None, srcSheet=None, row_colName=None):
+
+    if srcExcel == None:
+        srcExcel = xlw.Book.caller()
+        ws = wb.sheets[srcSheet]
+
+    if row_colName == None:
+        row_colName = 10
+
+    if srcSheet == None:
+        srcSheet = '1996～2018'
+
+    dfExcel = pd.read_excel(srcExcel,srcSheet, header=row_colName, index_col=None)
+
+    print(dfExcel.head(20))
+
 
 @xlw.func
 def excelIO_UDF_df_fileCntByFolderItem(row, column):
