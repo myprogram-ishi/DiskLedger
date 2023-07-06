@@ -429,14 +429,22 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
 
         data.df_fileCntByFolder = data.df_fileCntByFolder.append(df_temp)
 
-    data.df_fileCntByFolder.to_csv(os.path.join(data.csvOutoutFolder, r'df_fileCntByFolder.csv'))
+    try:
+        errorNum = 0
+        data.df_fileCntByFolder.to_csv(os.path.join(data.csvOutoutFolder, r'df_fileCntByFolder.csv'))
 
-    #'ファイル数'の列を整数型へ返還
-    data.df_fileCntByFolder['fileCnt'] = data.df_fileCntByFolder['fileCnt'].astype('int')
-    #しきい価を超えた行を抽出
-    data.df_fileCntByFolder = data.df_fileCntByFolder.loc[data.df_fileCntByFolder['fileCnt'] > fileCntUpperLimit]
-    #大きい順に並べ替え
-    data.df_fileCntByFolder = data.df_fileCntByFolder.sort_values('fileCnt', ascending=False)
+        #'ファイル数'の列を整数型へ返還
+        errorNum = 1
+        data.df_fileCntByFolder['fileCnt'] = data.df_fileCntByFolder['fileCnt'].astype('int')
+        #しきい価を超えた行を抽出
+        errorNum = 2
+        data.df_fileCntByFolder = data.df_fileCntByFolder.loc[data.df_fileCntByFolder['fileCnt'] > fileCntUpperLimit]
+        #大きい順に並べ替え
+        errorNum = 3
+        data.df_fileCntByFolder = data.df_fileCntByFolder.sort_values('fileCnt', ascending=False)
+
+    except Exception as e:
+        return e.__str__()
 
     return len(data.df_fileCntByFolder.index)
 
@@ -462,10 +470,17 @@ def excelIO_UDF_getWorkSheetToDataFrame(srcExcel=None, srcSheet=None, row_colNam
 @xlw.func
 def excelIO_UDF_df_fileCntByFolderItem(row, column):
 
-    if column == 0:
-        retValue = data.df_fileCntByFolder['path'].iloc[row]
-    elif column == 1:
-        retValue = data.df_fileCntByFolder['fileCnt'].iloc[row]
+    try:
+        if column == 0:
+            retValue = data.df_fileCntByFolder['path'].iloc[row]
+        elif column == 1:
+            retValue = data.df_fileCntByFolder['fileCnt'].iloc[row]
+    except:
+
+        if column == 0:
+            retValue = 'Error path : ' #+ 'row:' + str(row) + 'column:' + str(column)
+        elif column == 1:
+            retValue = 'Error fileCnt : ' #+ 'row:' + str(row) + 'column:' + str(column)
 
     return retValue
 
