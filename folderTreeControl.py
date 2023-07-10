@@ -313,7 +313,7 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
         #data.lst_generateToAddFolderTree.append('<' + current + '>')
         #interfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
-        branch = '└' if is_last else '├'
+        branch = '└―' if is_last else '├―'
         #print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
         data.lst_generateToAddFolderTree.append(
             '{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
