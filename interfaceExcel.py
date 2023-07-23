@@ -355,8 +355,13 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
                 # ハイパーリンク
                 adjust_df_to_row = 2    #データフレームでの行番号と、エクセルシートでの行番号の調整値（オフセット）
-                destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1])
-                destHyperLink = srcExcel + '#' + srcSheet + '!' + chr(index + 65) + str(destRow + adjust_df_to_row) #str(destRow)
+                destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1]) + adjust_df_to_row
+                destCol = chr(index + 65)
+                #ハイパーリンク先を範囲指定することで、画面上部に本来、目的のセルが表示されるようにする。
+                destHyperLink = srcExcel + '#' + srcSheet + '!' + destCol + str(destRow) + ":" + destCol + str(
+                    destRow + 20)
+                #destHyperLink = srcExcel + '#' + srcSheet + '!' + chr(index + 65) + str(destRow + adjust_df_to_row) #str(destRow)
+
                 wbHyp = openpyxl.Workbook()
                 wsHyp = wbHyp.active
 
