@@ -37,6 +37,25 @@ def excelIO_UDF_main(srcExcel):
     sheet.range('A1').value = excelIO_UDF_main.__name__
 
 ########################################################
+#   一番日付の新しいフォルダを取得する
+########################################################
+@xlw.func
+def excelIO_UDF_getLatestFolder(targetFolder):
+
+    #フォルダ一覧
+    lst_Folder = [f for f in os.listdir(targetFolder) if os.path.isdir(os.path.join(targetFolder, f))]
+    #並べ替え
+    lst_Folder.sort(reverse=True)
+
+    #フォルダ名先頭文字が、数字のフォルダを取得する
+    for folder in lst_Folder:
+        if str.isdecimal(folder[0]) == True:
+            break
+
+    return folder
+
+
+########################################################
 #       フォルダツリーを追加する
 ########################################################
 @xlw.func
@@ -300,6 +319,9 @@ def excelIO_UDF_outputdebugLog(srcExcel=None, shtName=None, row=1, col=1, outval
     sheet_pyLog = wb.sheets[shtName]
     sheet_pyLog.cells(row, col).value = outval
 
+########################################################
+#
+########################################################
 @xlw.func
 def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderNane= None):
 
