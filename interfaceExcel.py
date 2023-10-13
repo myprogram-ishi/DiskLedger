@@ -473,7 +473,8 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
     except Exception as e:
         return e.__str__()
 
-    return ("index len : " + str(len(data.df_fileCntByFolder.index)))
+    return (len(data.df_fileCntByFolder.index))
+    #return ("index len : " + str(len(data.df_fileCntByFolder.index)))
 
 
 @xlw.func
