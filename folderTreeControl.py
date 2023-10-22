@@ -9,6 +9,10 @@ import interfaceExcel
 expandTopIndex = 0
 branchNum = 0
 
+#でバグシートの使用列番号
+dbgRow_folderTreeControl = 1
+dbgCol_folderTreeControl = 5
+
 ########################################################
 #   フォルダツリー展開
 ########################################################
@@ -247,15 +251,28 @@ def expandFolderTree_from_BranchTop(root):
 ########################################################
 def isIncludeBranchMark(targetBranch):
 
-    if '├' in targetBranch:
-        ret = True
-        mark = '├'
-    elif '└' in targetBranch:
-        ret = True
-        mark = '└'
-    else:
+    try:
+        if '├' in targetBranch:
+            ret = True
+            mark = '├'
+        elif '└' in targetBranch:
+            ret = True
+            mark = '└'
+        else:
+            ret = False
+            mark = ''
+
+    except:
+
         ret = False
         mark = ''
+
+        #wb = xlw.Book(data.currentExcel)
+        #wb = xlw.Book.caller()
+        #interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=wb, shtName=data.shtName_dbgLog,
+        #                                          row=data.dbg_row, col=6, outval=targetBranch)
+        #data.dbg_row = data.dbg_row + 1
+
 
     #ブランチ記号が見つかった場合、その位置を取得する
     if ret == True:
