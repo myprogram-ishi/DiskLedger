@@ -6,6 +6,9 @@ import xlwings as xlw
 import data
 import interfaceExcel
 
+expandTopIndex = 0
+branchNum = 0
+
 ########################################################
 #   フォルダツリー展開
 ########################################################
