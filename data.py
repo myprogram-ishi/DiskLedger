@@ -15,6 +15,8 @@ shtName_dbgLog = 'debug_log'
 shtName_pyDbgLog = 'python_log'
 shtName_Expand = r'Expand'
 
+exceptBranchMark = r'expectBranchMark'
+
 treeTop = ':\\'
 
 csvOutoutFolder = r'D:\git\diff_FolderTree_pythonProject\csv'

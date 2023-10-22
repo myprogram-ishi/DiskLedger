@@ -85,7 +85,17 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     # パスの末尾
     work_lst_branch = data.lst_branch[work_branchIndex]
     curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
-    expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
+
+    try:
+        expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
+    except:
+        expandFullPath = data.lst_branch[work_branchIndex]
+        #expandFullPath = "―" + work_lst_branch
+        #if curr_ret == False:
+        #    if curr_branchMarkPos == data.exceptBranchMark:
+        #        expandFullPath = work_lst_branch
+
+    #パスの末尾よりも上
     result, mark, pos = getPostionOfHoraizonalBar(expandFullPath)
     if result == True:
         expandFullPath = expandFullPath[pos + 1:]
@@ -263,9 +273,8 @@ def isIncludeBranchMark(targetBranch):
             mark = ''
 
     except:
-
         ret = False
-        mark = ''
+        mark = data.exceptBranchMark
 
         #wb = xlw.Book(data.currentExcel)
         #wb = xlw.Book.caller()
