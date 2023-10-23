@@ -3,6 +3,7 @@ import pathlib
 import glob
 import xlwings as xlw
 
+import pandas as pd
 import data
 import interfaceExcel
 
@@ -86,10 +87,14 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     work_lst_branch = data.lst_branch[work_branchIndex]
     curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
 
-    try:
-        expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
-    except:
-        expandFullPath = data.lst_branch[work_branchIndex]
+    df = pd.DataFrame(data.lst_branch)
+    df.to_csv(r'd:\data_lst_branch.txt', sep='\t', header=False, index=False)
+
+    # try:
+    expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
+    #except:
+        #expandFullPath = r'work_lst_branch'
+        #expandFullPath = data.lst_branch[work_branchIndex]
         #expandFullPath = "―" + work_lst_branch
         #if curr_ret == False:
         #    if curr_branchMarkPos == data.exceptBranchMark:
@@ -99,6 +104,7 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     result, mark, pos = getPostionOfHoraizonalBar(expandFullPath)
     if result == True:
         expandFullPath = expandFullPath[pos + 1:]
+
     before_branchMarkPos = curr_branchMarkPos
     work_branchIndex = work_branchIndex - 1
 
@@ -209,7 +215,7 @@ def _expandFolderTree_for_OneBranch(TipBranch, branchIndex):
 #   フォルダツリーのトップから探す
 ########################################################
 def expandFolderTree_from_BranchTop(root):
-    print(expandFolderTree.__name__)
+    print(expandFolderTree_from_BranchTop.__name__)
 
     index = expandTopIndex
     result = False
@@ -239,7 +245,7 @@ def expandFolderTree_from_BranchTop(root):
         #終端判定に基づく処理
         if EndOfPath == True:
 
-            data.expandFullPath.append(expandFullPath)
+            #data.expandFullPath.append(expandFullPath)
             #初期化
             expandFullPath = data.lst_branch[expandTopIndex]
 
@@ -282,7 +288,6 @@ def isIncludeBranchMark(targetBranch):
         #                                          row=data.dbg_row, col=6, outval=targetBranch)
         #data.dbg_row = data.dbg_row + 1
 
-
     #ブランチ記号が見つかった場合、その位置を取得する
     if ret == True:
         pos = targetBranch.find(mark)
@@ -297,13 +302,17 @@ def isIncludeBranchMark(targetBranch):
 ########################################################
 def getPostionOfHoraizonalBar(targetBranch):
 
-    if '─' in targetBranch:
-        ret = True
-        mark = '─'
-    elif "―" in targetBranch:
-        ret = True
-        mark = "―"
-    else:
+    try:
+        if '─' in targetBranch:
+            ret = True
+            mark = '─'
+        elif "―" in targetBranch:
+            ret = True
+            mark = "―"
+        else:
+            ret = False
+            mark = ''
+    except:
         ret = False
         mark = ''
 
