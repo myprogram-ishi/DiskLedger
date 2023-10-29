@@ -318,6 +318,7 @@ def getPostionOfHoraizonalBar(targetBranch):
 
     #ブランチ記号が見つかった場合、その位置を取得する
     if ret == True:
+
         pos = targetBranch.find(mark)
     else:
         pos = -1
@@ -352,9 +353,15 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
         #interfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
         branch = '└―' if is_last else '├―'
+
         #print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
-        data.lst_generateToAddFolderTree.append(
-            '{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
+
+        branchWithMark = '{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current)
+
+        if r'/' in branchWithMark:
+            branchWithMark = branchWithMark.replace(r'/', '')
+
+        data.lst_generateToAddFolderTree.append(branchWithMark)
 
     # 下の階層のパスを取得
     paths = [p for p in glob.glob(path+'/*') if os.path.isdir(p)]
@@ -365,6 +372,7 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
     for i, p in enumerate(paths):
 
         indent_lower = indent_current
+
         if layer != 0:
             indent_lower += data.indent_tree if is_last else '│ '
 
