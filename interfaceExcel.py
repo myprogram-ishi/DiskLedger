@@ -378,7 +378,15 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 # ハイパーリンク
                 adjust_df_to_row = 2    #データフレームでの行番号と、エクセルシートでの行番号の調整値（オフセット）
                 destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1]) + adjust_df_to_row
-                destCol = chr(index + 65)
+
+                if index <= 25:     #列名が一文字（"Z"まで）
+                    destCol = chr(index + 65)
+                else:
+                # upper, lowerともに、内側カッコ内の結果（割り算の商または余り）が、１のとき、"A"になるようにする。
+                    upperColName = chr((index // 25) + 64)
+                    lowerColName = chr((index % 25) + 64)
+                    destCol = upperColName + lowerColName
+
                 #ハイパーリンク先を範囲指定することで、画面上部に本来、目的のセルが表示されるようにする。
                 destHyperLink = srcExcel + '#' + srcSheet + '!' + destCol + str(destRow) + ":" + destCol + str(
                     destRow + 20)
@@ -405,6 +413,8 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 df_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
                 a = a + 100
                 break
+            else:
+                continue
 
     with open(os.path.join(data.csvOutoutFolder, 'lst_posDesstFolder.csv'), 'w', newline='') as file:
         writer = csv.writer(file)
