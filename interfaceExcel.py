@@ -335,7 +335,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     if srcSheet != '' and srcSheet != None:
         data.shtName_base = srcSheet
 
-    if desstFolderNane != '' and desstFolderNane != None:
+    if desstFolderNane == '' and desstFolderNane == None:
         desstFolderNane = '旅日記'
 
     excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, excelIO_UDF_expandFolderTree.__name__)
@@ -369,7 +369,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
                 df_ret_dropna = df_sheet.dropna(how='all')
 
-                df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(r'旅日記', na=False)]
+                df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(desstFolderNane, na=False)]
                 df_ret= df_ret.dropna(how='all')
                 df_ret.to_csv(os.path.join(data.csvOutoutFolder, '___'+outFileName))
 
@@ -377,7 +377,26 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
                 # ハイパーリンク
                 adjust_df_to_row = 2    #データフレームでの行番号と、エクセルシートでの行番号の調整値（オフセット）
-                destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1]) + adjust_df_to_row
+                try:
+                    destRow = int(lst_posDesstFolder[len(lst_posDesstFolder) - 1]) + adjust_df_to_row
+                except TypeError as error:
+                    #ここに来るときは、設定したキーワードを含むセルが複数あるということなので、いったんリストにする
+                    list_KeywordCell = list(lst_posDesstFolder[len(lst_posDesstFolder) - 1])
+                    try:
+                        #リストの最後をハイパーリンクのリンク先に指定する
+                        destRow = int(list_KeywordCell[len(list_KeywordCell) - 1]) + adjust_df_to_row
+                        #debugFunction_lidt_toCsv(list_KeywordCell,r'D:\pythonDebugOut\listTemp.csv')
+                    except IndexError as error:
+                        # ここが実行されるときは、キーワードが見つからなかったとき。適当な値を入れておく
+                        destRow = 5
+
+                except IndexError as error:
+                    # ここが実行されるときは、キーワードが見つからなかったとき。適当な値を入れておく
+                    destRow = 5
+                #else:
+                #    #暴走防止
+                #    destRow = 1
+
 
                 if index <= 25:     #列名が一文字（"Z"まで）
                     destCol = chr(index + 65)
@@ -532,3 +551,10 @@ def excelIO_UDF_test(srcExcel,row, col):
     sheet = wb.sheets['debug_log']
 
     sheet.cells(row, col).value = excelIO_UDF_test.__name__
+
+
+def debugFunction_lidt_toCsv(outputList, fullpath):
+    f = open(fullpath, 'w')
+    writer = csv.writer(f)
+    writer.writerow(outputList)
+    f.close()
