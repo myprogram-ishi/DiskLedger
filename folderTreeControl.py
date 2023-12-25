@@ -1,6 +1,7 @@
 import os
 import pathlib
 import glob
+import subprocess
 import xlwings as xlw
 
 import pandas as pd
@@ -378,3 +379,13 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
 
         if os.path.isdir(p):
             generateFolderTree(p, layer=layer+1, is_last=is_last_path(i), indent_current=indent_lower)
+
+
+def textFilrOpen_with_sakuraEditor(folder=None, file=None):
+
+    if folder == None or file == None or len(folder) == 0 or len(file) == 0:
+        fullpath = r'D:\git\testData\sampleFolderTree.txt'
+    else:
+        fullpath = os.path.join(folder,file)
+
+    subprocess.Popen([r'C:\Program Files (x86)\sakura\sakura.exe', fullpath])

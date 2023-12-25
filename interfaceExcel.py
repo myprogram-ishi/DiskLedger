@@ -4,11 +4,12 @@ import openpyxl
 import xlwings as xlw
 #import pandas as pdFldr
 import data
-import folderTreeControl
+
 import pandas as pd
 import pandas as pdExcel
 import numpy as np
 import csv
+import folderTreeControl
 
 
 ########################################################
@@ -540,6 +541,23 @@ def excelIO_UDF_df_fileCntByFolderItem(row, column):
             retValue = 'Error fileCnt : ' #+ 'row:' + str(row) + 'column:' + str(column)
 
     return retValue
+
+@xlw.func
+def excelIO_UDF_filrOpen_with_sakuraEditor(folder=None, file=None):
+
+    TopFolder = r'Y:\旅日記\国内日記\2023'
+
+    #フォルダツリーの生成（結果は、data.lst_generateToAddFolderTree　に保存される）
+    folderTreeControl.generateFolderTree(path=TopFolder, layer=0, is_last=False,indent_current=data.indent_tree)
+
+    with open(os.path.join(folder, file), 'w', encoding='utf-8') as f:
+
+        for item in data.lst_generateToAddFolderTree:
+            omitChar = item.replace('―', '')
+            f.write(omitChar)
+            f.write('\n')
+
+    folderTreeControl.textFilrOpen_with_sakuraEditor(folder, file)
 
 @xlw.func
 def excelIO_UDF_test(srcExcel,row, col):
