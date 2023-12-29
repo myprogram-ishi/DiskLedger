@@ -10,7 +10,7 @@ import pandas as pdExcel
 import numpy as np
 import csv
 import folderTreeControl
-
+import searchItem
 
 ########################################################
 #      初期化　変数クリアなど
@@ -386,7 +386,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                     try:
                         #リストの最後をハイパーリンクのリンク先に指定する
                         destRow = int(list_KeywordCell[len(list_KeywordCell) - 1]) + adjust_df_to_row
-                        #debugFunction_lidt_toCsv(list_KeywordCell,r'D:\pythonDebugOut\listTemp.csv')
+                        #debugFunction_list_toCsv(list_KeywordCell,r'D:\pythonDebugOut\listTemp.csv')
                     except IndexError as error:
                         # ここが実行されるときは、キーワードが見つからなかったとき。適当な値を入れておく
                         destRow = 5
@@ -560,6 +560,18 @@ def excelIO_UDF_filrOpen_with_sakuraEditor(folder=None, file=None):
     folderTreeControl.textFilrOpen_with_sakuraEditor(folder, file)
 
 @xlw.func
+def excelIO_UDF_search(sheetsList):
+
+    debugFunction_list_toCsv(sheetsList, r'D:\pythonDebugOut\sheetsList.csv')
+#https://datumstudio.jp/blog/1722/#Excel
+    wb = xlw.Book.caller()
+
+    df_test = pd.DataFrame(wb.sheets(sheetsList[0]))
+    df_test.to_csv(r'D:\pythonDebugOut\df_test.csv')
+
+    searchItem.generateDataFrame_for_search(sheetsList)
+
+@xlw.func
 def excelIO_UDF_test(srcExcel,row, col):
 
     data.currentExcel = srcExcel
@@ -571,8 +583,8 @@ def excelIO_UDF_test(srcExcel,row, col):
     sheet.cells(row, col).value = excelIO_UDF_test.__name__
 
 
-def debugFunction_lidt_toCsv(outputList, fullpath):
-    f = open(fullpath, 'w')
+def debugFunction_list_toCsv(outputList, fullpath):
+    f = open(fullpath, encoding='UTF-8', mode='w')
     writer = csv.writer(f)
     writer.writerow(outputList)
     f.close()
