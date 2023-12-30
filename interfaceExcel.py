@@ -558,8 +558,20 @@ def excelIO_UDF_filrOpen_with_sakuraEditor(folder=None, file=None):
 
     folderTreeControl.textFilrOpen_with_sakuraEditor(folder, file)
 
+def getSearchKeyWord():
+
+    wb = xlw.Book(data.currentExcel)
+    macro = wb.macro(data.xlInterface + '.' + 'getSearchKeyword')
+    keyWord = macro
+
 @xlw.func
 def excelIO_UDF_search(srcExcel=None, sheetsList=None):
+
+    data.currentExcel = srcExcel
+
+    searchItem.searchKeyword_in_folderTree(sheetsList)
+
+def excelIO_UDF_search_old(srcExcel=None, sheetsList=None):
 
     data.currentExcel = srcExcel
     wb = xlw.Book(data.currentExcel)
