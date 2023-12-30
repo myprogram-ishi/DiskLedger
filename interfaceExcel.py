@@ -398,7 +398,6 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                 #    #暴走防止
                 #    destRow = 1
 
-
                 if index <= 25:     #列名が一文字（"Z"まで）
                     destCol = chr(index + 65)
                 else:
@@ -560,16 +559,37 @@ def excelIO_UDF_filrOpen_with_sakuraEditor(folder=None, file=None):
     folderTreeControl.textFilrOpen_with_sakuraEditor(folder, file)
 
 @xlw.func
-def excelIO_UDF_search(sheetsList):
+def excelIO_UDF_search(srcExcel=None, sheetsList=None):
 
-    debugFunction_list_toCsv(sheetsList, r'D:\pythonDebugOut\sheetsList.csv')
+    data.currentExcel = srcExcel
+    wb = xlw.Book(data.currentExcel)
+    df_wb = pd.ExcelFile(wb.fullname)
+    #wb = pd.ExcelFile(r'D:\git\diff_FolderTree_pythonProject\検索_python.xlsm')
+
+    for currSheet in sheetsList:
+        df_wb_Sht = pd.DataFrame()
+        df_wb_Sht = df_wb.parse(currSheet)
+
+        fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_' + currSheet + r'.csv'))
+        df_wb_Sht.to_csv(fllPath_searchData, encoding='utf-8')
+
+    #searchItem.generateDataFrame_for_search(sheetsList)
+
+    #debugFunction_list_toCsv(sheetsList, r'D:\pythonDebugOut\sheetsList.csv')
 #https://datumstudio.jp/blog/1722/#Excel
-    wb = xlw.Book.caller()
 
-    df_test = pd.DataFrame(wb.sheets(sheetsList[0]))
-    df_test.to_csv(r'D:\pythonDebugOut\df_test.csv')
+    #wb = pd.ExcelFile(xlw.Book.caller())
+    #wb = pd.ExcelFile(data.currentExcel)
+    # #ws = wb.sheets[sheetsList[0]]
+    #wb = pd.ExcelFile(r'D:\git\diff_FolderTree_pythonProject\検索_python.xlsm')
+    #wb = pd.ExcelFile(r'検索_python.xlsm')
 
-    searchItem.generateDataFrame_for_search(sheetsList)
+    #df_xlboook = wb.parse(sheetsList[0])
+    #df_test = pd.DataFrame(wb.sheets(sheetsList[0]))
+    #df_xlboook.to_csv(r'D:\pythonDebugOut\df_test.csv', encoding='utf-8')
+
+    #debugFunction_list_toCsv(ws, r'D:\pythonDebugOut\ws_test.csv')
+    #searchItem.generateDataFrame_for_search(sheetsList)
 
 @xlw.func
 def excelIO_UDF_test(srcExcel,row, col):

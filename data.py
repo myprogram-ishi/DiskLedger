@@ -21,6 +21,8 @@ treeTop = ':\\'
 
 csvOutoutFolder = r'D:\git\diff_FolderTree_pythonProject\csv'
 
+dataFolderToSearch = r'D:\git\diff_FolderTree_pythonProject\dataForSezrch'
+
 searchRootFolder = '旅日記'   #'SPB_17.2'
 
 xlInterface = 'Module_interfacePython'
