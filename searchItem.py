@@ -18,7 +18,7 @@ def searchKeyword_in_folderTree(sheetsList):
     if type(sheetsList) is list:
         for currSheet in sheetsList:
             df_wb_Sht = pd.DataFrame()
-            df_wb_Sht = df_wb.parse(currSheet)
+            df_wb_Sht = df_wb.parse(currSheet, header=None)
 
             fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_' + currSheet + r'.csv'))
             df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
@@ -36,13 +36,31 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
     lst_colmName = []
 
     #先頭列削除
-    df_format = df_base.drop(df_base.columns[1], axis=1)
+    df_format = df_base.drop(df_base.columns[0], axis=1)
     #空白行削除
     df_format = df_format.dropna(how='all')
-
+    df_format.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_format.csv')
+    #列名の生成、付加
     lst_colmName = df_format.iloc[0]
     for item in lst_colmName:
         print(item)
+
+    for cnt, item in enumerate(lst_colmName):
+        item_split_yen = str(item).split('\\')
+        frmt_cnt = '{0:04}'.format(cnt) #4桁固定でインデックス表記
+
+        if item_split_yen[-1] != "":
+            key_name = item_split_yen[-1]
+        else:
+            key_name = item_split_yen[-2]
+
+        df_Key = frmt_cnt + r'_' + key_name
+
+        print(df_Key)
+        print(item)
+
+        #for splitItem in item_split_yen:
+        #    print(splitItem)
 
     if saveFullpath != None:
         df_format.to_csv(saveFullpath, encoding='utf-8')
