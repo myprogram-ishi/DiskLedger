@@ -8,7 +8,7 @@ dbg_row = 5
 ###############################
 currentExcel = ''
 
-nanData = r'Emp__ty'
+nanData = r'Empty'
 
 #エクセルシート名
 shtName_main = 'メイン'

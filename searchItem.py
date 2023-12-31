@@ -65,12 +65,10 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
         #for splitItem in item_split_yen:
         #    print(splitItem)
 
-    df_format = df_format.set_axis(lst_new_colmName, axis=1)
-
     if saveFullpath != None:
         df_format.to_csv(saveFullpath, encoding='utf-8')
 
-    return df_format
+    return df_format, lst_new_colmName
 
 def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
