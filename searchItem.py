@@ -21,15 +21,33 @@ def searchKeyword_in_folderTree(sheetsList):
             df_wb_Sht = df_wb.parse(currSheet)
 
             fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_' + currSheet + r'.csv'))
-            df_wb_Sht.to_csv(fllPath_searchData, encoding='utf-8')
+            df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
     else:
         df_wb_Sht = pd.DataFrame()
         df_wb_Sht = df_wb.parse(sheetsList)
 
         fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'dfdf__' + sheetsList + r'.csv'))
-        df_wb_Sht.to_csv(fllPath_searchData, encoding='utf-8')
+        df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
 
         #searchKeyWord_in_dataFrame(df_wb_Sht, currSheet)
+
+def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
+
+    lst_colmName = []
+
+    #先頭列削除
+    df_format = df_base.drop(df_base.columns[1], axis=1)
+    #空白行削除
+    df_format = df_format.dropna(how='all')
+
+    lst_colmName = df_format.iloc[0]
+    for item in lst_colmName:
+        print(item)
+
+    if saveFullpath != None:
+        df_format.to_csv(saveFullpath, encoding='utf-8')
+
+    return df_format
 
 def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 

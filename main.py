@@ -4,6 +4,7 @@
 # Shift を2回押す を押すと、クラス/ファイル/ツールウィンドウ/アクション/設定を検索します。
 
 import xlwings as xlw
+import testFunction
 import interfaceExcel
 
 #import folderTreeControl as fldrctrl
@@ -21,13 +22,16 @@ if __name__ == '__main__':
 
     print(test)
 
-    interfaceExcel.excelIO_UDF_getWorkSheetToDataFrame(srcExcel='検索_python.xlsm', srcSheet='1996～2018', row_colName=9)
+    testFunction.test_DataFrame_Formatting()
+
+    #testFunction.test_searchKeyWord_in_dataFrame()
+
+    #interfaceExcel.excelIO_UDF_getWorkSheetToDataFrame(srcExcel='検索_python.xlsm', srcSheet='1996～2018', row_colName=9)
 
     #fldrctrl.getFolderTree(root="c:\\")
 
     #fldrctrl.getFolderFullpath(root="C:\\sourcrcode")
 
     xlw.serve()
-
 
 # PyCharm のヘルプは https://www.jetbrains.com/help/pycharm/ を参照してください

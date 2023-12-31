@@ -8,6 +8,8 @@ dbg_row = 5
 ###############################
 currentExcel = ''
 
+nanData = r'Emp__ty'
+
 #エクセルシート名
 shtName_main = 'メイン'
 shtName_base = '基準'
