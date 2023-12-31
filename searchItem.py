@@ -18,6 +18,8 @@ def searchKeyword_in_folderTree(sheetsList):
     if type(sheetsList) is list:
         for currSheet in sheetsList:
             df_wb_Sht = pd.DataFrame()
+
+            #先頭行も項目名ではないデータとして取り込む（先頭列も同じ扱いになっているように見える）
             df_wb_Sht = df_wb.parse(currSheet, header=None)
 
             fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_' + currSheet + r'.csv'))
@@ -33,7 +35,7 @@ def searchKeyword_in_folderTree(sheetsList):
 
 def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 
-    lst_colmName = []
+    lst_new_colmName=[]
 
     #先頭列削除
     df_format = df_base.drop(df_base.columns[0], axis=1)
@@ -42,9 +44,10 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
     df_format.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_format.csv')
     #列名の生成、付加
     lst_colmName = df_format.iloc[0]
-    for item in lst_colmName:
-        print(item)
+    #for item in lst_colmName:
+    #    print(item)
 
+    #列名のリストを作る
     for cnt, item in enumerate(lst_colmName):
         item_split_yen = str(item).split('\\')
         frmt_cnt = '{0:04}'.format(cnt) #4桁固定でインデックス表記
@@ -52,15 +55,17 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
         if item_split_yen[-1] != "":
             key_name = item_split_yen[-1]
         else:
-            key_name = item_split_yen[-2]
+            key_name = item_split_yen[-2]   #末尾が空白の場合は、ひとつ前
 
         df_Key = frmt_cnt + r'_' + key_name
+        lst_new_colmName.append(df_Key)
 
-        print(df_Key)
-        print(item)
-
+        #print(df_Key)
+        #print(item)
         #for splitItem in item_split_yen:
         #    print(splitItem)
+
+    df_format = df_format.set_axis(lst_new_colmName, axis=1)
 
     if saveFullpath != None:
         df_format.to_csv(saveFullpath, encoding='utf-8')
