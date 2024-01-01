@@ -65,6 +65,9 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
         #for splitItem in item_split_yen:
         #    print(splitItem)
 
+    #列名を更新
+    df_format = df_format.set_axis(lst_new_colmName, axis='columns')
+
     if saveFullpath != None:
         df_format.to_csv(saveFullpath, encoding='utf-8')
 
