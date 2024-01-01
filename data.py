@@ -17,6 +17,8 @@ shtName_dbgLog = 'debug_log'
 shtName_pyDbgLog = 'python_log'
 shtName_Expand = r'Expand'
 
+dfColName_RowCnt = r'shtRowNo'
+
 exceptBranchMark = r'expectBranchMark'
 
 treeTop = ':\\'

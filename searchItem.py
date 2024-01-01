@@ -28,7 +28,7 @@ def searchKeyword_in_folderTree(sheetsList):
         df_wb_Sht = pd.DataFrame()
         df_wb_Sht = df_wb.parse(sheetsList)
 
-        fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_xlPrse_' + sheetsList + r'.csv'))
+        fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_xlPrseFormat_' + sheetsList + r'.csv'))
         df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
 
         #searchKeyWord_in_dataFrame(df_wb_Sht, currSheet)
@@ -69,6 +69,12 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 
     #列名を更新
     df_format = df_format.set_axis(lst_new_colmName, axis='columns')
+
+    topRow = 5
+    lst_rowNo = list(range(topRow, topRow + df_format.shape[0], 1))
+    #ser_rowNo = pd.DataFrame(lst_rowNo, columns=['shtRowNo'])
+    #シート状の行番号を追加する
+    df_format[data.dfColName_RowCnt] = lst_rowNo
 
     if saveFullpath != None:
         df_format.to_csv(saveFullpath, encoding='utf-8')
