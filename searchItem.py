@@ -48,6 +48,8 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
     lst_colmName = df_format.iloc[0]
     #for item in lst_colmName:
     #    print(item)
+    #dfインデックスの0番目が、エクセルシートの１行目に相当するようなので、+2 する
+    xlSht_topRow = df_base.shape[0] - df_format.shape[0] + 2
 
     #列名のリストを作る
     for cnt, item in enumerate(lst_colmName):
@@ -70,8 +72,7 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
     #列名を更新
     df_format = df_format.set_axis(lst_new_colmName, axis='columns')
 
-    topRow = 5
-    lst_rowNo = list(range(topRow, topRow + df_format.shape[0], 1))
+    lst_rowNo = list(range(xlSht_topRow, xlSht_topRow + df_format.shape[0], 1))
     #ser_rowNo = pd.DataFrame(lst_rowNo, columns=['shtRowNo'])
     #シート状の行番号を追加する
     df_format[data.dfColName_RowCnt] = lst_rowNo
