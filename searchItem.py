@@ -28,7 +28,7 @@ def searchKeyword_in_folderTree(sheetsList):
         df_wb_Sht = pd.DataFrame()
         df_wb_Sht = df_wb.parse(sheetsList)
 
-        fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'dfdf__' + sheetsList + r'.csv'))
+        fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_xlPrse_' + sheetsList + r'.csv'))
         df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
 
         #searchKeyWord_in_dataFrame(df_wb_Sht, currSheet)
@@ -37,11 +37,13 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 
     lst_new_colmName=[]
 
+    df_base.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_base_py_.csv')
+
     #先頭列削除
-    df_format = df_base.drop(df_base.columns[0], axis=1)
+    #df_format = df_base.drop(df_base.columns[0], axis=1)
     #空白行削除
-    df_format = df_format.dropna(how='all')
-    df_format.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_format.csv')
+    df_format = df_base.dropna(how='all')
+    #df_format.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_format.csv')
     #列名の生成、付加
     lst_colmName = df_format.iloc[0]
     #for item in lst_colmName:
