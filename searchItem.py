@@ -4,6 +4,8 @@ import xlwings as xlw
 import pandas as pd
 import data
 import interfaceExcel
+import testFunction
+
 
 ########################################################
 #   エクセルシートをデータフレームに入れて、
@@ -99,10 +101,7 @@ def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
     lst_colName = df_toBeSearched.columns
 
-    with open(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), 'w') as f:
-        f.write(str(ret_keyword))
-        for d in lst_colName:
-            f.write("%s\n" % d)
+    testFunction.test_output_list_to_textFile(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), lst_colName)
 
     df_ret = df_toBeSearched[df_toBeSearched[lst_colName[0]].str.contains(ret_keyword, na=False)]
     #df_ret = df_ret.dropna(how='all')
