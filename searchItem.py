@@ -29,10 +29,14 @@ def searchKeyword_in_folderTree(sheetsList):
         df_wb_Sht = df_wb.parse(sheetsList)
 
         fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_xlPrseFormat_' + sheetsList + r'.csv'))
-        df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
+        df_Formatted, lst_colName = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
 
-        #searchKeyWord_in_dataFrame(df_wb_Sht, currSheet)
+        searchKeyWord_in_dataFrame(df_Formatted, sheetsList)
 
+#########################################################################
+#   データフレームを整形する
+#   引数で渡されたデータフレームに列名、およびエクセルシートの行番号の列を付加する
+#########################################################################
 def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 
     lst_new_colmName=[]
@@ -82,12 +86,24 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 
     return df_format, lst_new_colmName
 
+#########################################################################
+#   データフレームから、キーワードを検索する
+#########################################################################
 def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
-    ret_keyword = interfaceExcel.getSearchKeyWord
+    #df_toBeSearched.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_toBeSearched.csv', encoding='utf-8')
+
+    ret_keyword = interfaceExcel.getSearchKeyWord()
 
     df_ret_dropna = df_toBeSearched.dropna(how='all')
 
-    df_ret = df_toBeSearched[df_toBeSearched[0].str.contains(ret_keyword, na=False)]
-    df_ret = df_ret.dropna(how='all')
-    df_ret.to_csv(os.path.join(data.dataFolderToSearch, '___' + currSheet))
+    lst_colName = df_toBeSearched.columns
+
+    with open(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), 'w') as f:
+        f.write(str(ret_keyword))
+        for d in lst_colName:
+            f.write("%s\n" % d)
+
+    df_ret = df_toBeSearched[df_toBeSearched[lst_colName[0]].str.contains(ret_keyword, na=False)]
+    #df_ret = df_ret.dropna(how='all')
+    df_ret.to_csv(os.path.join(data.dataFolderToSearch, 'df_ret__df_toBeSearched.csv'))

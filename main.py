@@ -22,6 +22,9 @@ if __name__ == '__main__':
 
     print(test)
 
+    ret_keyword = interfaceExcel.getSearchKeyWord()
+    print(ret_keyword)
+
     testFunction.test_DataFrame_Formatting()
 
     #testFunction.test_searchKeyWord_in_dataFrame()

@@ -564,6 +564,8 @@ def getSearchKeyWord():
     macro = wb.macro(data.xlInterface + '.' + 'getSearchKeyword')
     keyWord = macro
 
+    return str(r'桜')
+
 @xlw.func
 def excelIO_UDF_search(srcExcel=None, sheetsList=None):
 
