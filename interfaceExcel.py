@@ -572,7 +572,10 @@ def excelIO_UDF_search(srcExcel=None, sheetsList=None):
 
     data.currentExcel = srcExcel
 
-    searchItem.searchKeyword_in_folderTree(sheetsList)
+    df_result = searchItem.searchKeyword_in_folderTree(sheetsList)
+
+    return df_result[data.dfColName_RowCnt]
+
 
 def excelIO_UDF_search_old(srcExcel=None, sheetsList=None):
 

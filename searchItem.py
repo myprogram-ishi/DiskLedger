@@ -26,6 +26,9 @@ def searchKeyword_in_folderTree(sheetsList):
 
             fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_' + currSheet + r'.csv'))
             df_Formatted = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
+
+        return pd.DataFrame()
+
     else:
         df_wb_Sht = pd.DataFrame()
         df_wb_Sht = df_wb.parse(sheetsList)
@@ -33,7 +36,13 @@ def searchKeyword_in_folderTree(sheetsList):
         fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_xlPrseFormat_' + sheetsList + r'.csv'))
         df_Formatted, lst_colName = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
 
-        searchKeyWord_in_dataFrame(df_Formatted, sheetsList)
+        df_searchResults = searchKeyWord_in_dataFrame(df_Formatted, sheetsList)
+
+        df_searchResults.to_csv(os.path.join(data.dataFolderToSearch, 'df_searchResults.csv'))
+        df_searchResults[data.dfColName_RowCnt].to_csv(os.path.join(data.dataFolderToSearch, 'df_searchResults_dfColName_RowCnt.csv'))
+
+        return df_searchResults
+
 
 #########################################################################
 #   データフレームを整形する
@@ -104,5 +113,6 @@ def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
     testFunction.test_output_list_to_textFile(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), lst_colName)
 
     df_ret = df_toBeSearched[df_toBeSearched[lst_colName[0]].str.contains(ret_keyword, na=False)]
-    #df_ret = df_ret.dropna(how='all')
-    df_ret.to_csv(os.path.join(data.dataFolderToSearch, 'df_ret__df_toBeSearched.csv'))
+    #df_searchResults = df_searchResults.dropna(how='all')
+
+    return df_ret
