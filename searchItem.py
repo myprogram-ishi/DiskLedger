@@ -39,7 +39,8 @@ def searchKeyword_in_folderTree(sheetsList):
         df_searchResults = searchKeyWord_in_dataFrame(df_Formatted, sheetsList)
 
         df_searchResults.to_csv(os.path.join(data.dataFolderToSearch, 'df_searchResults.csv'))
-        df_searchResults[data.dfColName_RowCnt].to_csv(os.path.join(data.dataFolderToSearch, 'df_searchResults_dfColName_RowCnt.csv'))
+        df_searchResults[data.dfColName_RowCnt].to_csv(
+            os.path.join(data.dataFolderToSearch, 'df_searchResults_dfColName_RowCnt.csv'))
 
         return df_searchResults
 
@@ -114,5 +115,6 @@ def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
     df_ret = df_toBeSearched[df_toBeSearched[lst_colName[0]].str.contains(ret_keyword, na=False)]
     #df_searchResults = df_searchResults.dropna(how='all')
+    interfaceExcel.excelIO_OutputSearchResults_to_Excel(df_ret, currSheet)
 
     return df_ret

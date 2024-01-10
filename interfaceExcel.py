@@ -12,6 +12,8 @@ import csv
 import folderTreeControl
 import searchItem
 
+import testFunction
+
 ########################################################
 #      初期化　変数クリアなど
 ########################################################
@@ -608,6 +610,13 @@ def excelIO_UDF_search_old(srcExcel=None, sheetsList=None):
 
     #debugFunction_list_toCsv(ws, r'D:\pythonDebugOut\ws_test.csv')
     #searchItem.generateDataFrame_for_search(sheetsList)
+
+#この関数は、python内部で呼ばれる前提
+def excelIO_OutputSearchResults_to_Excel( df_results, currentSheetName=None ):
+
+    wb = xlw.Book(data.currentExcel)
+    macro = wb.macro(data.xlInterface + '.' + 'writeSearchResults_to_workSheet')
+    macro(df_results[data.dfColName_RowCnt].to_list(), currentSheetName)
 
 @xlw.func
 def excelIO_UDF_test(srcExcel,row, col):
