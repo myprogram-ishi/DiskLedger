@@ -35,6 +35,7 @@ def searchKeyword_in_folderTree(sheetsList):
 
         fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_xlPrseFormat_' + sheetsList + r'.csv'))
         df_Formatted, lst_colName = DataFrame_Formatting(df_wb_Sht,fllPath_searchData)
+        #df_Formatted.to_csv(os.path.join(data.dataFolderToSearch, 'df_Formatted.csv'))
 
         df_searchResults = searchKeyWord_in_dataFrame(df_Formatted, sheetsList)
 
@@ -111,10 +112,21 @@ def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
     lst_colName = df_toBeSearched.columns
 
-    testFunction.test_output_list_to_textFile(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), lst_colName)
+    #testFunction.test_output_list_to_textFile(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), lst_colName)
+    #df_toBeSearched.to_csv(os.path.join(data.dataFolderToSearch, r'df_toBeSearched.csv'))
 
-    df_ret = df_toBeSearched[df_toBeSearched[lst_colName[0]].str.contains(ret_keyword, na=False)]
-    #df_searchResults = df_searchResults.dropna(how='all')
-    interfaceExcel.excelIO_OutputSearchResults_to_Excel(df_ret, currSheet)
+    for counter, col in enumerate(lst_colName):
+        try:
+            df_ret = df_toBeSearched[df_toBeSearched[col].str.contains(ret_keyword, na=False)]
+            #df_ret[col].to_csv(os.path.join(data.dataFolderToSearch, (r'df_ret_' + col + r'.csv')))
+            #df_searchResults = df_searchResults.dropna(how='all')
+        except AttributeError:
+            #AttributeError: Can only use .str accessor with string values 対策の処理
+            df_ret[col].to_csv(os.path.join(data.dataFolderToSearch, (r'df_ret_AttributeError' + col + r'.csv')))
+            continue
+
+        list_Result = df_ret[data.dfColName_RowCnt].to_list()
+        list_Result.insert(0, col)
+        interfaceExcel.excelIO_OutputSearchResults_to_Excel(list_Result, currSheet)
 
     return df_ret
