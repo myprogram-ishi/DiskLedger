@@ -36,16 +36,16 @@ def expandFolderTree(root, col):
 
     branchNum = len(data.lst_branch)
 
-    expandFolderTree_from_BranchTip(root, col)
+    expandFolderTree_from_endOfBranch(root, col)
 
     #expandFolderTree_from_BranchTop(root)
 
 ########################################################
 #   フォルダツリーの末端から探す
 ########################################################
-def expandFolderTree_from_BranchTip(root, col):
+def expandFolderTree_from_endOfBranch(root, col):
 
-    interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_BranchTip.__name__)
+    interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_endOfBranch.__name__)
 
     rowDownCnt = len(data.lst_branch)  # エクセルシート↑の行番号なので、１から配列要素お個数分。
     lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
@@ -67,8 +67,8 @@ def expandFolderTree_from_BranchTip(root, col):
         #生成したフルパスを追加
         data.lst_expandFolderTreeTarget.append(ret_expandFullPath)
         #interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
-        interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=None, shtName=data.shtName_Expand,
-                                                  row=(rowDownCnt + rowOffset), col=col, outval=ret_expandFullPath)
+        interfaceExcel.excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=data.shtName_Expand,
+                                                        row=(rowDownCnt + rowOffset), col=col, outval=ret_expandFullPath)
         rowDownCnt = rowDownCnt - 1
 
         #次のブラチのフルパス作成のための変数設定

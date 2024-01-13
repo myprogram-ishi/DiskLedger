@@ -72,7 +72,7 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
 
     r = startRow
     for branch in data.lst_generateToAddFolderTree:
-        excelIO_UDF_outputdebugLog(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol, outval=str(branch))
+        excelIO_UDF_writeDataOnWorksheet(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol, outval=str(branch))
         r = r + 1
 
 ########################################################
@@ -305,9 +305,9 @@ def excelIO_UDF_outputTargetFullPath( index ):
         return 'out of range'
 
 ########################################################
-#      指定したエクセルの場所（シート、行、列）に値を書き込む
+#    指定したエクセルの場所（シート、行、列）に値を書き込む
 ########################################################
-def excelIO_UDF_outputdebugLog(srcExcel=None, shtName=None, row=1, col=1, outval='No data'):
+def excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=None, row=1, col=1, outval='No data'):
 
     if shtName == '' or shtName == None:
         shtName = data.shtName_pyDbgLog
