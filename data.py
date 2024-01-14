@@ -3,6 +3,10 @@ import pandas as pd
 
 dbg_row = 5
 
+#フォルダツリー展開結果をワークシートに出す：True / 出さない:False
+outExpFolderTreeToWrkSht = True
+lst_expanfFolderTree = []
+
 ###############################
 #   文字列
 ###############################

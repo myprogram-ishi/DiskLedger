@@ -76,6 +76,28 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
         r = r + 1
 
 ########################################################
+#      フォルダツリーを展開先選択
+# statusの設定で、フォルダツリー展開結果の出力先を変える
+#   True : ワークシートに出す
+#   False : ワークシートに出さない。データフレームに出す
+########################################################
+@xlw.func
+def excelIO_UDF_set_expandFolderTree_status(status=None):
+
+    data.outExpFolderTreeToWrkSht = status
+
+    if status == False:
+        data.lst_expanfFolderTree.clear()
+
+@xlw.func
+def excelIO_UDF_get_expandFolderTree_status():
+    return data.outExpFolderTreeToWrkSht
+
+@xlw.func
+def excelIO_UDF_getExpandFolderTree():
+    return data.lst_expandFolderTreeTarget
+
+########################################################
 #      フォルダツリーを展開
 ########################################################
 @xlw.func
