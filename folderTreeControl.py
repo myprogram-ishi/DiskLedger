@@ -69,6 +69,12 @@ def expandFolderTree_from_endOfBranch(root, col):
         #interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_Expand, 1, expandFullPath)
         interfaceExcel.excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=data.shtName_Expand,
                                                         row=(rowDownCnt + rowOffset), col=col, outval=ret_expandFullPath)
+
+        #ハイパーリンクを付ける
+        #ws = wb.sheets['base']
+        #ws.cells(rowDownCnt + rowOffset, col).add_hyperlink(ret_expandFullPath, ws.cells(rowDownCnt + rowOffset,
+        # col).value)
+
         rowDownCnt = rowDownCnt - 1
 
         #次のブラチのフルパス作成のための変数設定
