@@ -57,7 +57,6 @@ def excelIO_UDF_getLatestFolder(targetFolder):
 
     return folder
 
-
 ########################################################
 #       フォルダツリーを追加する
 ########################################################
@@ -88,7 +87,6 @@ def excelIO_UDF_set_expandFolderTree_status(status=None):
 
     if status == False:
         data.lst_expanfFolderTree.clear()
-
 @xlw.func
 def excelIO_UDF_get_expandFolderTree_status():
     return data.outExpFolderTreeToWrkSht
@@ -230,47 +228,6 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         sheet_result.cells(row + offsetResultRow, col).value = item
 
     return offsetResultRow
-
-##########################################################################################
-def debug():
-#基準側のループ
-    sheet_result_row = 1
-    for itemBase in (data.lst_expandFolderTreeBase):
-        posTopFolder = itemBase.find(searchTopFolder)
-        posColon = itemBase.find(r':')
-        if posTopFolder > 0:
-            #検索開始フォルダが指定されている場合は、それ以降を対象とする
-            work_itemBase = itemBase[posTopFolder:]
-        elif posColon > 0:
-            work_itemBase = itemBase[posColon:]
-        else:
-            work_itemBase = itemBase
-
-        sheet_result.cells(sheet_result_row, 2).value = work_itemBase
-        sheet_result_row = sheet_result_row + 1
-
-        for itemTarget in (data.lst_expandFolderTreeTarget):
-            posTopFolder = itemTarget.find(searchTopFolder)
-            posColon = itemBase.find(r':')
-            if posTopFolder > 0:
-                # 検索開始フォルダが指定されている場合は、それ以降を対象とする
-                work_itemTarget = itemTarget[posTopFolder:]
-            elif posColon > 0:
-                work_itemTarget = itemTarget[posColon:]
-            else:
-                work_itemTarget = itemTarget
-
-            if work_itemTarget in work_itemBase:
-                data.lst_searchResults.append(work_itemTarget)
-                break
-
-    sheet_result.cells(1, 1).value = len(data.lst_expandFolderTreeBase)
-    sheet_result.cells(2, 1).value = len(data.lst_expandFolderTreeTarget)
-
-    row = 3
-    for item in data.lst_searchResults:
-        sheet_result.cells(row, 1).value = item
-        row = row + 1
 
 ########################################################
 #
