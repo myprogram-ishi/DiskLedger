@@ -81,11 +81,6 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
         df_Key = frmt_cnt + r'_' + key_name
         lst_new_colmName.append(df_Key)
 
-        #print(df_Key)
-        #print(item)
-        #for splitItem in item_split_yen:
-        #    print(splitItem)
-
     #列名を更新
     df_format = df_format.set_axis(lst_new_colmName, axis='columns')
 
@@ -104,22 +99,16 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 #########################################################################
 def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
-    #df_toBeSearched.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_toBeSearched.csv', encoding='utf-8')
-
     ret_keyword = interfaceExcel.getSearchKeyWord()
 
     df_ret_dropna = df_toBeSearched.dropna(how='all')
 
     lst_colName = df_toBeSearched.columns
 
-    #testFunction.test_output_list_to_textFile(os.path.join(data.dataFolderToSearch, r'lst_colName.txt'), lst_colName)
-    #df_toBeSearched.to_csv(os.path.join(data.dataFolderToSearch, r'df_toBeSearched.csv'))
-
     for counter, col in enumerate(lst_colName):
         try:
             df_ret = df_toBeSearched[df_toBeSearched[col].str.contains(ret_keyword, na=False)]
-            #df_ret[col].to_csv(os.path.join(data.dataFolderToSearch, (r'df_ret_' + col + r'.csv')))
-            #df_searchResults = df_searchResults.dropna(how='all')
+
         except AttributeError:
             #AttributeError: Can only use .str accessor with string values 対策の処理
             df_ret[col].to_csv(os.path.join(data.dataFolderToSearch, (r'df_ret_AttributeError' + col + r'.csv')))

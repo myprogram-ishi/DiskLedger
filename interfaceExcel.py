@@ -615,24 +615,6 @@ def excelIO_UDF_search_old(srcExcel=None, sheetsList=None):
         fllPath_searchData = os.path.join(data.dataFolderToSearch, (r'df_' + currSheet + r'.csv'))
         df_wb_Sht.to_csv(fllPath_searchData, encoding='utf-8')
 
-    #searchItem.generateDataFrame_for_search(sheetsList)
-
-    #debugFunction_list_toCsv(sheetsList, r'D:\pythonDebugOut\sheetsList.csv')
-#https://datumstudio.jp/blog/1722/#Excel
-
-    #wb = pd.ExcelFile(xlw.Book.caller())
-    #wb = pd.ExcelFile(data.currentExcel)
-    # #ws = wb.sheets[sheetsList[0]]
-    #wb = pd.ExcelFile(r'D:\git\diff_FolderTree_pythonProject\検索_python.xlsm')
-    #wb = pd.ExcelFile(r'検索_python.xlsm')
-
-    #df_xlboook = wb.parse(sheetsList[0])
-    #df_test = pd.DataFrame(wb.sheets(sheetsList[0]))
-    #df_xlboook.to_csv(r'D:\pythonDebugOut\df_test.csv', encoding='utf-8')
-
-    #debugFunction_list_toCsv(ws, r'D:\pythonDebugOut\ws_test.csv')
-    #searchItem.generateDataFrame_for_search(sheetsList)
-
 #この関数は、python内部で呼ばれる前提
 def excelIO_OutputSearchResults_to_Excel( list_results, currentSheetName=None ):
 

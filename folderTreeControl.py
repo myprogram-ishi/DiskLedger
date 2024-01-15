@@ -55,10 +55,6 @@ def expandFolderTree_from_endOfBranch(root, col):
     macro = wb.macro(data.xlInterface + '.' + 'getFullpathWriteStartRowForFileCount')
     destRow = macro()
     rowOffset = destRow - 1
-    #if destRow > rowDownCnt:
-    #    rowOffset  = rowDownCnt + 1
-    #else:
-    #    rowOffset = 0
 
     while branchIndex > 0:
 
@@ -97,15 +93,7 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     df = pd.DataFrame(data.lst_branch)
     df.to_csv(r'd:\data_lst_branch.txt', sep='\t', header=False, index=False)
 
-    # try:
     expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
-    #except:
-        #expandFullPath = r'work_lst_branch'
-        #expandFullPath = data.lst_branch[work_branchIndex]
-        #expandFullPath = "―" + work_lst_branch
-        #if curr_ret == False:
-        #    if curr_branchMarkPos == data.exceptBranchMark:
-        #        expandFullPath = work_lst_branch
 
     #パスの末尾よりも上
     result, mark, pos = getPostionOfHoraizonalBar(expandFullPath)
@@ -289,12 +277,6 @@ def isIncludeBranchMark(targetBranch):
         ret = False
         mark = data.exceptBranchMark
 
-        #wb = xlw.Book(data.currentExcel)
-        #wb = xlw.Book.caller()
-        #interfaceExcel.excelIO_UDF_outputdebugLog(srcExcel=wb, shtName=data.shtName_dbgLog,
-        #                                          row=data.dbg_row, col=6, outval=targetBranch)
-        #data.dbg_row = data.dbg_row + 1
-
     #ブランチ記号が見つかった場合、その位置を取得する
     if ret == True:
         pos = targetBranch.find(mark)
@@ -360,8 +342,6 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
         #interfaceExcel.excelIO_UDF_appendDataToLasRow(shtName, col, setVal):
     else:
         branch = '└―' if is_last else '├―'
-
-        #print('{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current))
 
         branchWithMark = '{indent}{branch}{dirname}'.format(indent=indent_current, branch=branch, dirname=current)
 
