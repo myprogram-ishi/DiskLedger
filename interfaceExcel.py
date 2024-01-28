@@ -523,21 +523,26 @@ def excelIO_UDF_df_fileCntByFolderItem(row, column):
     return retValue
 
 @xlw.func
-def excelIO_UDF_filrOpen_with_sakuraEditor(folder=None, file=None):
+#   引数で指定されたフォルダ以下のフォルダツリーを作ってサクラエディタで表示する
+#       topFolder=None：展開するフォルダツリートップ
+#       workTextFile=：表示するサクラエディタのファイルあ（基本的にフルパス指定）
+def excelIO_UDF_filrOpen_with_sakuraEditor(topFolder=None, workTextFile=None):
 
-    TopFolder = r'Y:\旅日記\国内日記\2023'
+    if topFolder == None or topFolder == "":
+        topFolder = r'Y:\旅日記\国内日記\2023'
 
     #フォルダツリーの生成（結果は、data.lst_generateToAddFolderTree　に保存される）
-    folderTreeControl.generateFolderTree(path=TopFolder, layer=0, is_last=False,indent_current=data.indent_tree)
+    folderTreeControl.generateFolderTree(path=topFolder, layer=0, is_last=False,
+                                         indent_current=data.indent_tree)
 
-    with open(os.path.join(folder, file), 'w', encoding='utf-8') as f:
+    with open(os.path.join(topFolder, workTextFile), 'w', encoding='utf-8') as f:
 
         for item in data.lst_generateToAddFolderTree:
             omitChar = item.replace('―', '')
             f.write(omitChar)
             f.write('\n')
 
-    folderTreeControl.textFilrOpen_with_sakuraEditor(folder, file)
+    folderTreeControl.textFilrOpen_with_sakuraEditor(topFolder, workTextFile)
 
 def getSearchKeyWord():
 
