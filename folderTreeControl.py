@@ -56,8 +56,8 @@ def expandFolderTree_from_endOfBranch(root, col):
     destRow = macro()
     rowOffset = destRow - 1
 
-    #配列のクリア
-    interfaceExcel.excelIO_UDF_clear_lst_expand_target()
+    #配列のクリア     この関数の実行条件（タイミング）は考えなおさないといけない
+    ##interfaceExcel.excelIO_UDF_clear_lst_expand_target()
 
     while branchIndex > 0:
 
