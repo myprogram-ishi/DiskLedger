@@ -339,6 +339,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     a = 0
     df_True = pd.DataFrame
     dict_posDesstFolder = {}
+    lst_posDesstFolder.clear()
     for index, diskID in enumerate(lst_diskID):
 
         if index > 0:
@@ -388,8 +389,9 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                     destCol = upperColName + lowerColName
 
                 #ハイパーリンク先を範囲指定することで、画面上部に本来、目的のセルが表示されるようにする。
-                destHyperLink = srcExcel + '#' + srcSheet + '!' + destCol + str(destRow) + ":" + destCol + str(
-                    destRow + 20)
+                destHyperLink = srcExcel + '#' + srcSheet + '!' + destCol + str(
+                    destRow) + ":" + destCol + str(destRow + 20)
+
                 #destHyperLink = srcExcel + '#' + srcSheet + '!' + chr(index + 65) + str(destRow + adjust_df_to_row) #str(destRow)
 
                 wbHyp = openpyxl.Workbook()
