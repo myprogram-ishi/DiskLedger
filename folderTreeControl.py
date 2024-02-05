@@ -96,7 +96,10 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     df = pd.DataFrame(data.lst_branch)
     df.to_csv(r'd:\data_lst_branch.txt', sep='\t', header=False, index=False)
 
-    expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
+    try:
+        expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
+    except:
+        return r'except00_expandFolderTree_for_OneBranch'
 
     #パスの末尾よりも上
     result, mark, pos = getPostionOfHoraizonalBar(expandFullPath)
@@ -108,27 +111,31 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
 
     # ブランチにパスを付加していく
     while work_branchIndex >= 0:
+        try:
+            work_lst_branch = data.lst_branch[work_branchIndex]
+            curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
 
-        work_lst_branch = data.lst_branch[work_branchIndex]
-        curr_ret, curr_mark, curr_branchMarkPos = isIncludeBranchMark(work_lst_branch)
+            if curr_branchMarkPos < before_branchMarkPos:
+                # 一つ上の階層
+                upperBranch = work_lst_branch[curr_branchMarkPos + 1:]
 
-        if curr_branchMarkPos < before_branchMarkPos:
-            # 一つ上の階層
-            upperBranch = work_lst_branch[curr_branchMarkPos + 1:]
+                result, mark, pos = getPostionOfHoraizonalBar(upperBranch)
+                if result == True:
+                    upperBranch = upperBranch[pos + 1:]
 
-            result, mark, pos = getPostionOfHoraizonalBar(upperBranch)
-            if result == True:
-                upperBranch = upperBranch[pos + 1:]
+                if upperBranch[-1] == '\\':
+                    # 末尾に\がついているかいないかで処理を分ける
+                    expandFullPath = upperBranch + expandFullPath
+                else:
+                    expandFullPath = upperBranch + '\\' + expandFullPath
 
-            if upperBranch[-1] == '\\':
-                # 末尾に\がついているかいないかで処理を分ける
-                expandFullPath = upperBranch + expandFullPath
-            else:
-                expandFullPath = upperBranch + '\\' + expandFullPath
+                before_branchMarkPos = curr_branchMarkPos
 
-            before_branchMarkPos = curr_branchMarkPos
+            work_branchIndex = work_branchIndex - 1
 
-        work_branchIndex = work_branchIndex - 1
+        except:
+            expandFullPath = r'except01_expandFolderTree_for_OneBranch'
+            break
 
     return expandFullPath
 
