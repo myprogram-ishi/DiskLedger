@@ -64,7 +64,8 @@ def expandFolderTree_from_endOfBranch(root, col):
         ret_expandFullPath = expandFolderTree_for_OneBranch(data.lst_branch[branchIndex], branchIndex)
 
         #生成したフルパスを追加
-        data.lst_expandFolderTreeTarget.append(ret_expandFullPath)
+        if ret_expandFullPath != None and ret_expandFullPath != "":
+            data.lst_expandFolderTreeTarget.append(ret_expandFullPath)
 
         if data.outExpFolderTreeToWrkSht == True:
             interfaceExcel.excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=data.shtName_Expand,
@@ -99,7 +100,7 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
     try:
         expandFullPath = work_lst_branch[curr_branchMarkPos + 1:]
     except:
-        return r'except00_expandFolderTree_for_OneBranch'
+        return None     #r'except00_expandFolderTree_for_OneBranch'
 
     #パスの末尾よりも上
     result, mark, pos = getPostionOfHoraizonalBar(expandFullPath)
@@ -134,8 +135,12 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
             work_branchIndex = work_branchIndex - 1
 
         except:
-            expandFullPath = r'except01_expandFolderTree_for_OneBranch'
+            expandFullPath = None   #r'except01_expandFolderTree_for_OneBranch'
             break
+
+    #検索対象の戦闘フォルダ以降を抽出する
+    topPos = expandFullPath.find(data.searchRootFolder)
+    expandFullPath = expandFullPath[topPos:]
 
     return expandFullPath
 

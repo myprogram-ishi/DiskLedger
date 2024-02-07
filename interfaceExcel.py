@@ -318,7 +318,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
         data.shtName_base = srcSheet
 
     if desstFolderNane == '' and desstFolderNane == None:
-        desstFolderNane = '旅日記'
+        desstFolderNane = data.searchRootFolder
 
     excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, excelIO_UDF_expandFolderTree.__name__)
 
