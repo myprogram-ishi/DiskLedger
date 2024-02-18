@@ -181,6 +181,11 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
         lst_work_expandFolderTreeBase = data.lst_expandFolderTreeBase
         lst_work_expandFolderTreeTarget = data.lst_expandFolderTreeTarget
 
+    testFunction.test_output_list_to_textFile(r'D:\git\diff_FolderTree_pythonProject/lst_work_expandFolderTreeBase.txt',
+                                              lst_work_expandFolderTreeBase)
+    testFunction.test_output_list_to_textFile(r'D:\git\diff_FolderTree_pythonProject/lst_work_expandFolderTreeTarget.txt',
+                                                 lst_work_expandFolderTreeTarget)
+
     col = 2
     result_item_row = 2
 
