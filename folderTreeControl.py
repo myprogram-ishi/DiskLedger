@@ -7,6 +7,7 @@ import xlwings as xlw
 import pandas as pd
 import data
 import interfaceExcel
+import testFunction
 
 expandTopIndex = 0
 branchNum = 0
@@ -79,6 +80,10 @@ def expandFolderTree_from_endOfBranch(root, col):
 
         #次のブラチのフルパス作成のための変数設定
         branchIndex = branchIndex - 1
+
+    testFunction.test_output_list_to_textFile(None, r'lst_expandFolderTreeTarget.txt',
+                                              data.lst_expandFolderTreeTarget)
+
 
 ########################################################
 #   フォルダ一つ分のフルパス生成
