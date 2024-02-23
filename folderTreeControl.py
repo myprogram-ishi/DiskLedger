@@ -82,8 +82,9 @@ def expandFolderTree_from_endOfBranch(root, col):
         #次のブラチのフルパス作成のための変数設定
         branchIndex = branchIndex - 1
 
-    testFunction.test_output_list_to_textFile(None, r'lst_expandFolderTreeTarget.txt',
-                                              data.lst_expandFolderTreeTarget)
+    if len(data.lst_expandFolderTreeTarget) > 0:
+        testFunction.test_output_list_to_textFile(None, r'lst_expandFolderTreeTarget.txt',
+                                                  data.lst_expandFolderTreeTarget)
 
 
 ########################################################
