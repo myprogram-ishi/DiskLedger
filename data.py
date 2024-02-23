@@ -27,7 +27,11 @@ exceptBranchMark = r'expectBranchMark'
 
 treeTop = ':\\'
 
-csvOutoutFolder = r'D:\git\diff_FolderTree_pythonProject\csv'
+#outoutFolder_df_tocsv = r'D:\git\diff_FolderTree_pythonProject\csv'
+outoutFolder_df_tocsv = r'D:\git\diff_FolderTree_pythonProject\debug\csv'
+
+outoutFolder_list_txt = r'D:\git\diff_FolderTree_pythonProject\debug\list'
+
 
 dataFolderToSearch = r'D:\git\diff_FolderTree_pythonProject\dataForSezrch'
 

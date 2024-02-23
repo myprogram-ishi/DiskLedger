@@ -67,7 +67,7 @@ def test_searchKeyWord_in_dataFrame():
 def test_output_list_to_textFile( folderName, fileName, outputListData ):
 
     if folderName == None:
-        folderName = r'D:\git\diff_FolderTree_pythonProject\debug'
+        folderName = data.outoutFolder_list_txt
 
     outpuFulltPath = os.path.join(folderName,fileName)
 

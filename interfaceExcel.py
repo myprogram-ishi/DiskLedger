@@ -175,16 +175,20 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
 
         lst_work_expandFolderTreeTarget \
             = [item for item in data.lst_expandFolderTreeTarget if searchTopFolder in item]
-    else:
 
+        fileNameListBase = r'lst_work_expandFolderTreeBase_filter.txt'
+        fileNameListTarget = r'lst_work_expandFolderTreeTarget_filter.txt'
+
+    else:
     #フォルダ指定の無い場合は、そのまま使用する
         lst_work_expandFolderTreeBase = data.lst_expandFolderTreeBase
         lst_work_expandFolderTreeTarget = data.lst_expandFolderTreeTarget
 
-    testFunction.test_output_list_to_textFile(None, r'lst_work_expandFolderTreeBase.txt',
-                                              lst_work_expandFolderTreeBase)
-    testFunction.test_output_list_to_textFile(None, r'lst_work_expandFolderTreeTarget.txt',
-                                                 lst_work_expandFolderTreeTarget)
+        fileNameListBase = r'lst_work_expandFolderTreeBase.txt'
+        fileNameListTarget = r'lst_work_expandFolderTreeTarget.txt'
+
+    testFunction.test_output_list_to_textFile(None, fileNameListBase, lst_work_expandFolderTreeBase)
+    testFunction.test_output_list_to_textFile(None, fileNameListTarget, lst_work_expandFolderTreeTarget)
     col = 2
     result_item_row = 2
 
@@ -337,7 +341,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
     #ディスクIDおまとめた、リストを取得
     lst_diskID = [x for x in list(df_sheet.columns) if x != None]
 
-    df_sheet.to_csv(os.path.join(data.csvOutoutFolder, r'df_sheet.csv'))
+    df_sheet.to_csv(os.path.join(data.outoutFolder_df_tocsv, r'df_sheet.csv'))
     df_sheet_T = df_sheet.T
 
     a = 0
@@ -349,7 +353,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
         if index > 0:
 
             outFileName = r'df_sheet_org_' + str(index) + '_' + str(diskID) + '.csv'
-            df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+            df_sheet[str(diskID)].to_csv(os.path.join(data.outoutFolder_df_tocsv, outFileName))
 
             try:
                 outFileName = r'series_sheet1_' + str(diskID) + '.csv'
@@ -358,7 +362,7 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 
                 df_ret = df_ret_dropna[df_ret_dropna[diskID].str.contains(desstFolderNane, na=False)]
                 df_ret= df_ret.dropna(how='all')
-                df_ret.to_csv(os.path.join(data.csvOutoutFolder, '___'+outFileName))
+                df_ret.to_csv(os.path.join(data.outoutFolder_df_tocsv, '___' + outFileName))
 
                 lst_posDesstFolder.append(df_ret.index.values)
 
@@ -412,17 +416,17 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
                     #break
             except ValueError as error:
                 outFileName = r'ValueError_' + str(index) + '_' + str(diskID) + '.csv'
-                df_sheet[str(diskID)].to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                df_sheet[str(diskID)].to_csv(os.path.join(data.outoutFolder_df_tocsv, outFileName))
                 a = a + 1
             except AttributeError as error:
                 outFileName = r'AttributeError_' + str(index) + '_' + str(diskID) + '.csv'
-                df_sheet.to_csv(os.path.join(data.csvOutoutFolder, outFileName))
+                df_sheet.to_csv(os.path.join(data.outoutFolder_df_tocsv, outFileName))
                 a = a + 100
                 break
             else:
                 continue
 
-    with open(os.path.join(data.csvOutoutFolder, 'lst_posDesstFolder.csv'), 'w', newline='') as file:
+    with open(os.path.join(data.outoutFolder_df_tocsv, 'lst_posDesstFolder.csv'), 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(lst_posDesstFolder)
 
@@ -474,7 +478,7 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
 
     try:
         errorNum = 0
-        data.df_fileCntByFolder.to_csv(os.path.join(data.csvOutoutFolder, r'df_fileCntByFolder.csv'))
+        data.df_fileCntByFolder.to_csv(os.path.join(data.outoutFolder_df_tocsv, r'df_fileCntByFolder.csv'))
 
         #'ファイル数'の列を整数型へ返還
         errorNum = 1
