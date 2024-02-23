@@ -145,8 +145,8 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
             break
 
     #検索対象の戦闘フォルダ以降を抽出する
-    topPos = expandFullPath.find(data.searchRootFolder)
-    expandFullPath = expandFullPath[topPos:]
+    #topPos = expandFullPath.find(data.searchRootFolder)
+    #expandFullPath = expandFullPath[topPos:]
 
     return expandFullPath
 
