@@ -69,9 +69,12 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
     #フォルダツリーの生成（結果は、data.lst_generateToAddFolderTree　に保存される）
     folderTreeControl.generateFolderTree(path=TopFolder, layer=0, is_last=False,indent_current=data.indent_tree)
 
+    testFunction.test_output_list_to_textFile(None, r'lst_generateToAddFolderTree.txt',
+                                              data.lst_expandFolderTreeTarget)
     r = startRow
     for branch in data.lst_generateToAddFolderTree:
-        excelIO_UDF_writeDataOnWorksheet(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol, outval=str(branch))
+        excelIO_UDF_writeDataOnWorksheet(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol,
+                                         outval=str(branch) )
         r = r + 1
 
 ########################################################
@@ -464,14 +467,14 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
     #data.df_fileCntByFolder.columns = ['path', 'fileCnt']
 
     index = 1
-    #df_temp = pd.DataFrame([[ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]])
-    #df_fileCntByFolder.append(df_temp)
-
     for index in range(1, rowCount):
-        #temp_lst = [ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]
+        #ファイル数取得
+        fileCount = ws.cells(topRow + index, col_fileCnt).value
+        if fileCount == None or fileCount == "":
+            fileCount = 0
 
         df_temp = pd.DataFrame(
-            [[ws.cells(topRow + index, col_fileCnt).value, ws.cells(topRow + index, col_folder).value]],
+            [[fileCount, ws.cells(topRow + index, col_folder).value]],
             columns=data.cols_dfFileCnt)
 
         data.df_fileCntByFolder = data.df_fileCntByFolder.append(df_temp)
@@ -492,6 +495,7 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
 
     except Exception as e:
         return e.__str__()
+        #return data.df_fileCntByFolder['fileCnt']
 
     return (len(data.df_fileCntByFolder.index))
     #return ("index len : " + str(len(data.df_fileCntByFolder.index)))

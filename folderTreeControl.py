@@ -59,6 +59,7 @@ def expandFolderTree_from_endOfBranch(root, col):
 
     #配列のクリア     この関数の実行条件（タイミング）は考えなおさないといけない
     ##interfaceExcel.excelIO_UDF_clear_lst_expand_target()
+    #data.lst_expandFolderTreeTarget.clear()
 
     while branchIndex > 0:
 
