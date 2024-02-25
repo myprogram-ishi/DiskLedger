@@ -32,6 +32,10 @@ def excelIO_UDF_clear_lst_expand_base():
 def excelIO_UDF_clear_lst_expand_target():
     data.lst_expandFolderTreeTarget.clear()
 
+@xlw.func
+def excelIO_UDF__loggerFinalize():
+    testFunction.finalize_loggerObject()
+
 ########################################################
 #      エクセルとの入出力メイン関数
 ########################################################

@@ -1,15 +1,16 @@
 import os
 import logging
 import pandas as pd
-import searchItem
+import datetime
 
+import searchItem
 import data
 
 logger = logging.getLogger("loggerInstance")
 
 def initialize_loggerObject():
 
-    format = r'%(levelname)-9s  %(asctime)s [%(filename)s:%(lineno)d] %(message)s'
+    format = r'%(asctime)s [%(filename)s:%(lineno)d]  [%(levelname)s] %(message)s'
 
     #logger = logging.getLogger("loggerInstance")
 
@@ -19,15 +20,21 @@ def initialize_loggerObject():
 
     logger.setLevel(logging.DEBUG)
 
-    st_handler = logging.StreamHandler()
-    st_handler.setFormatter(logging.Formatter(format))
-    st_handler.setLevel(logging.DEBUG)
-    logger.addHandler(st_handler)
+    #st_handler = logging.StreamHandler()
+    #st_handler.setFormatter(logging.Formatter(format))
+    #st_handler.setLevel(logging.DEBUG)
+    #logger.addHandler(st_handler)
 
+    logFileName = 'log_' + str(datetime.datetime.now()) + r'.log'
+    logFileName = logFileName.replace(r':', r'')
     fl_handler = logging.FileHandler(
-        filename=os.path.join(data.outoutFolder_debug, r'logMessage.log'), encoding=r'utf-8')
+        filename=os.path.join(data.outoutFolder_debug, logFileName), encoding=r'utf-8')
+    fl_handler.setFormatter(logging.Formatter(format))
 
     logger.addHandler(fl_handler)
+
+def finalize_loggerObject():
+    logging.shutdown()
 
 def outputLogMessage_to_loggerObject(megType=None, message=None):
 
