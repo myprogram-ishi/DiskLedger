@@ -3,8 +3,10 @@ import pathlib
 import glob
 import subprocess
 import xlwings as xlw
-
 import pandas as pd
+import logging
+import inspect
+
 import data
 import interfaceExcel
 import testFunction
@@ -21,7 +23,8 @@ dbgCol_folderTreeControl = 5
 ########################################################
 def expandFolderTree(root, col):
 
-    interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree.__name__)
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
 
     #引数で指定された、フォルダを展開する先頭フォルダの位置を検出
     index = 0
@@ -46,7 +49,8 @@ def expandFolderTree(root, col):
 ########################################################
 def expandFolderTree_from_endOfBranch(root, col):
 
-    interfaceExcel.excelIO_UDF_appendDataToLasRow(data.shtName_dbgLog, 1, expandFolderTree_from_endOfBranch.__name__)
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
 
     rowDownCnt = len(data.lst_branch)  # エクセルシート↑の行番号なので、１から配列要素お個数分。
     lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
@@ -91,6 +95,9 @@ def expandFolderTree_from_endOfBranch(root, col):
 #   フォルダ一つ分のフルパス生成
 ########################################################
 def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
+
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     # ブランチ名
     work_branchIndex = branchIndex
 
@@ -155,8 +162,9 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
 #   フォルダツリーのトップから探す
 ########################################################
 def expandFolderTree_from_BranchTop(root):
-    print(expandFolderTree_from_BranchTop.__name__)
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     index = expandTopIndex
     result = False
     mark = ''
@@ -274,6 +282,8 @@ def getFolderFullpath(root):
 ###############################################################################
 def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     if not pathlib.Path(path).is_absolute():
         path = str(pathlib.Path(path).resolve())
 

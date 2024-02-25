@@ -1,8 +1,38 @@
 import os
+import logging
 import pandas as pd
 import searchItem
 
 import data
+
+logger = logging.getLogger("loggerInstance")
+
+def initialize_loggerObject():
+
+    format = r'%(levelname)-9s  %(asctime)s [%(filename)s:%(lineno)d] %(message)s'
+
+    #logger = logging.getLogger("loggerInstance")
+
+    #logger.error(r'[error]')
+    #logger.info((r'[info]'))
+    #logger.debug(r'debug')
+
+    logger.setLevel(logging.DEBUG)
+
+    st_handler = logging.StreamHandler()
+    st_handler.setFormatter(logging.Formatter(format))
+    st_handler.setLevel(logging.DEBUG)
+    logger.addHandler(st_handler)
+
+    fl_handler = logging.FileHandler(
+        filename=os.path.join(data.outoutFolder_debug, r'logMessage.log'), encoding=r'utf-8')
+
+    logger.addHandler(fl_handler)
+
+def outputLogMessage_to_loggerObject(megType=None, message=None):
+
+    logger.info(message)
+
 
 def test_DataFrame_Formatting():
 

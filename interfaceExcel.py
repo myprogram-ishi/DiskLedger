@@ -1,7 +1,8 @@
-
+import logging
 import os
 import openpyxl
 import xlwings as xlw
+import inspect
 #import pandas as pdFldr
 import data
 
@@ -19,7 +20,11 @@ import testFunction
 ########################################################
 @xlw.func
 def excelIO_UDF_initialize():
+
+    testFunction.initialize_loggerObject()
+
     data.dataClear()
+
 @xlw.func
 def excelIO_UDF_clear_lst_expand_base():
     data.lst_expandFolderTreeBase.clear()
@@ -32,6 +37,8 @@ def excelIO_UDF_clear_lst_expand_target():
 ########################################################
 @xlw.func
 def excelIO_UDF_main(srcExcel):
+
+    testFunction.outputLogMessage_to_loggerObject(r'excelIO_UDF_main')
 
     data.currentExcel = srcExcel
 
@@ -104,6 +111,8 @@ def excelIO_UDF_getExpandFolderTree():
 @xlw.func
 def excelIO_UDF_expandFolderTree(srcExcel= None, srcSheet= None, dstSheet= None, startRow= None, StartCol= None):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     row = startRow
     col = StartCol
 
@@ -159,6 +168,8 @@ offsetResultRow = 10
 @xlw.func
 def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=None):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     lst_work_expandFolderTreeBase = []
     lst_work_expandFolderTreeTarget = []
 
@@ -245,13 +256,18 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
 ########################################################
 @xlw.func
 def generateFullPath():
-    print(generateFullPath.__name__)
+
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
 
 ########################################################
 #
 ########################################################
 @xlw.func
 def excelIO_UDF_appendDataToLasRow(shtName,col, setVal):
+
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
 
     #エクセルシートに定義されたフォルダツリーを１行ずつ、リストへ追加する。
 
@@ -268,6 +284,9 @@ def excelIO_UDF_appendDataToLasRow(shtName,col, setVal):
 ########################################################
 @xlw.func
 def excelIO_UDF_getSearchRootFolder():
+
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     wb = xlw.Book(data.currentExcel)
     macro = wb.macro(data.xlInterface + '.' + 'getSearchRootFolder')
     data.searchRootFolder = macro()
@@ -277,6 +296,9 @@ def excelIO_UDF_getSearchRootFolder():
 ########################################################
 @xlw.func
 def excelIO_UDF_setBaseFullPath( item ):
+
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     data.lst_expandFolderTreeBase.append(item)
 
 ########################################################
@@ -318,6 +340,8 @@ def excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=None, row=1, col=1, 
 @xlw.func
 def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderNane= None):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     lst_diskID = []
     lst_posDesstFolder = []
     lst_error = []
@@ -438,6 +462,8 @@ def excelIO_UDF_getDestHyperLinkRow(srcExcel= None, srcSheet= None, desstFolderN
 @xlw.func
 def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCount = None, fileCntUpperLimit = 0):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,inspect.currentframe().f_code.co_name)
+
 #エクセルシート状の列番号
     col_fileCnt = 2     #ファイル数の列
     col_folder = 3   #フォルダパスの列絵
@@ -522,6 +548,8 @@ def excelIO_UDF_getWorkSheetToDataFrame(srcExcel=None, srcSheet=None, row_colNam
 @xlw.func
 def excelIO_UDF_df_fileCntByFolderItem(row, column):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     try:
         if column == 0:
             retValue = data.df_fileCntByFolder['path'].iloc[row]
@@ -560,6 +588,8 @@ def excelIO_UDF_filrOpen_with_sakuraEditor(topFolder=None, workTextFile=None):
 
 def getSearchKeyWord():
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     wb = xlw.Book(data.currentExcel)
     macro = wb.macro(data.xlInterface + '.' + 'getSearchKeyword')
     keyWord = macro()
@@ -570,6 +600,8 @@ def getSearchKeyWord():
 @xlw.func
 def excelIO_UDF_search(srcExcel=None, sheetsList=None):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     data.currentExcel = srcExcel
 
     df_result = searchItem.searchKeyword_in_folderTree(sheetsList)
@@ -594,6 +626,8 @@ def excelIO_UDF_search_old(srcExcel=None, sheetsList=None):
 #この関数は、python内部で呼ばれる前提
 def excelIO_OutputSearchResults_to_Excel( list_results, currentSheetName=None ):
 
+    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
+                                                  inspect.currentframe().f_code.co_name)
     wb = xlw.Book(data.currentExcel)
     macro = wb.macro(data.xlInterface + '.' + 'writeSearchResults_to_workSheet')
     macro(list_results, currentSheetName)
