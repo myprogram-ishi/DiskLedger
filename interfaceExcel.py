@@ -187,12 +187,26 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
 
     if searchTopFolder != None:
 
-    #検索開始フォルダが指定されている場合は、そのフォルダ名でリストにフィルタをかけて抽出する
-        lst_work_expandFolderTreeBase \
-            = [item for item in data.lst_expandFolderTreeBase if searchTopFolder in item]
+        for item in data.lst_expandFolderTreeBase:
+            topPos = item.find(searchTopFolder)
+            if topPos > 0:
+                lst_work_expandFolderTreeBase.append(item[topPos:])
+            else:
+                lst_work_expandFolderTreeBase.append(item)
 
-        lst_work_expandFolderTreeTarget \
-            = [item for item in data.lst_expandFolderTreeTarget if searchTopFolder in item]
+        for item in data.lst_expandFolderTreeTarget:
+            topPos = item.find(searchTopFolder)
+            if topPos > 0:
+                lst_work_expandFolderTreeTarget.append(item[topPos:])
+            else:
+                lst_work_expandFolderTreeTarget.append(item)
+
+        # 検索開始フォルダが指定されている場合は、そのフォルダ名でリストにフィルタをかけて抽出する
+        # lst_work_expandFolderTreeBase
+        # = [item for item in data.lst_expandFolderTreeBase if searchTopFolder in item]
+
+        # lst_work_expandFolderTreeTarget \
+        #    = [item for item in data.lst_expandFolderTreeTarget if searchTopFolder in item]
 
         fileNameListBase = r'lst_work_expandFolderTreeBase_filter.txt'
         fileNameListTarget = r'lst_work_expandFolderTreeTarget_filter.txt'
@@ -219,6 +233,8 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
     foundCount = 0
     notFoundCount = 0
 
+    lst_NGitem = []
+
     #展開したフルパスをシートに記録
     for row, item in enumerate(lst_work_expandFolderTreeBase):
 
@@ -234,12 +250,15 @@ def excelIO_UDF_searchBranch(srcExcel=None, searchTopFolder=None, resultSheet=No
             foundCount = foundCount + 1
             colorPtrn = 1   #背景[青]　文字[白]
         else:
+            lst_NGitem.append(item)
             sheet_result.cells(row + offsetResultRow, 1).value = '×'
             colorPtrn = 0   #背景[赤]　文字[白]
             notFoundCount = notFoundCount + 1
 
         macro = wb.macro(data.xlInterface + '.' + 'setCellInterior')
         macro(resultSheet, row + offsetResultRow, 1, colorPtrn)
+
+    testFunction.test_output_list_to_textFile(None, r'lst_NGitem.txt', lst_NGitem)
 
     #比較結果の表示
     #見つかったフォルダ数の数（バックアップ済みフォルダ数）
