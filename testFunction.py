@@ -10,7 +10,8 @@ logger = logging.getLogger("loggerInstance")
 
 def initialize_loggerObject():
 
-    format = r'%(asctime)s [%(filename)s:%(lineno)d]  [%(levelname)s] %(message)s'
+    #format = r'%(asctime)s [%(filename)s:%(lineno)d]  [%(levelname)s] %(message)s'
+    format = r'%(asctime)s [%(levelname)s] %(message)s'
 
     #logger = logging.getLogger("loggerInstance")
 
