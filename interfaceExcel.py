@@ -19,7 +19,9 @@ import testFunction
 #      初期化　変数クリアなど
 ########################################################
 @xlw.func
-def excelIO_UDF_initialize():
+def excelIO_UDF_initialize(srcExcel):
+
+    data.currentExcel = srcExcel
 
     testFunction.initialize_loggerObject()
 
@@ -49,6 +51,28 @@ def excelIO_UDF_main(srcExcel):
     wb = xlw.Book(data.currentExcel)
     sheet = wb.sheets[data.shtName_main]
     sheet.range('A1').value = excelIO_UDF_main.__name__
+
+########################################################
+#   VBA側のユーザーフォームのキャプションを書き換える
+########################################################
+@xlw.func
+def excelIO_UDF_updataUserformCaption(userformIndex=None, msssage=None):
+
+    wb = xlw.Book(data.currentExcel)
+    #wb = xlw.Book("検索_python.xlsm")
+
+    macro = wb.macro(data.xlInterface + '.' + 'updateUserformCaption')
+    if userformIndex == None:
+        UFindex = 0
+    else:
+        UFindex = userformIndex
+
+    if msssage == None:
+        msgforCaption = ""
+    else:
+        msgforCaption = msssage
+
+    macro(UFindex, msgforCaption)
 
 ########################################################
 #   一番日付の新しいフォルダを取得する
@@ -83,7 +107,21 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
     testFunction.test_output_list_to_textFile(None, r'lst_generateToAddFolderTree.txt',
                                               data.lst_expandFolderTreeTarget)
     r = startRow
+    isLastTrip = False  #一番最後のお出かけブランチ（日帰り、宿泊問わず最後に出かけた日のフォルダ）
     for branch in data.lst_generateToAddFolderTree:
+
+        firstCharWithoutSpace = (branch.strip())[0]
+
+        if isLastTrip == False:
+            if firstCharWithoutSpace == '├':
+                posWakibou = branch.find(r'―')
+                if posWakibou > 0:
+                    excelIO_UDF_updataUserformCaption(msssage=branch[posWakibou+1:])
+
+        if firstCharWithoutSpace == '└':
+        #フォルダツリーの末尾（最後に出かけた日のフォルダに到達）
+            isLastTrip = True
+
         excelIO_UDF_writeDataOnWorksheet(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol,
                                          outval=str(branch) )
         r = r + 1
