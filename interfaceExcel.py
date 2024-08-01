@@ -113,14 +113,21 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
         firstCharWithoutSpace = (branch.strip())[0]
 
         if isLastTrip == False:
+        #フォルダツリー最後の、旅行フォルダではない場合
             if firstCharWithoutSpace == '├':
+                isCaptionUpdata = True
+            elif firstCharWithoutSpace == '└':
+                isCaptionUpdata = True
+                #フォルダツリーの末尾（最後に出かけた日のフォルダに到達）
+                isLastTrip = True
+            else:
+                isCaptionUpdata = False
+
+            #ユーザーフォーム上のキャプション更新（書き換え）
+            if isCaptionUpdata == True:
                 posWakibou = branch.find(r'―')
                 if posWakibou > 0:
-                    excelIO_UDF_updataUserformCaption(msssage=branch[posWakibou+1:])
-
-        if firstCharWithoutSpace == '└':
-        #フォルダツリーの末尾（最後に出かけた日のフォルダに到達）
-            isLastTrip = True
+                    excelIO_UDF_updataUserformCaption(msssage=branch[posWakibou + 1:])
 
         excelIO_UDF_writeDataOnWorksheet(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol,
                                          outval=str(branch) )
