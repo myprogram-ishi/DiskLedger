@@ -127,8 +127,9 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
             if isCaptionUpdata == True:
                 posWakibou = branch.find(r'―')
                 if posWakibou > 0:
-                    excelIO_UDF_updataUserformCaption(msssage=branch[posWakibou + 1:])
-
+                    messageForCaption = branch[posWakibou + 1:] + r'　以下を処理しています'
+                    excelIO_UDF_updataUserformCaption(msssage=messageForCaption)
+                    
         excelIO_UDF_writeDataOnWorksheet(srcExcel=srcExcel, shtName=dstSheet, row=r, col=StartCol,
                                          outval=str(branch) )
         r = r + 1
