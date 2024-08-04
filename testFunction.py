@@ -127,8 +127,29 @@ def test_output_list_to_textFile( folderName, fileName, outputListData ):
     if folderName == None:
         folderName = data.outoutFolder_list_txt
 
-    outpuFulltPath = os.path.join(folderName,fileName)
+    try:
+        outpuFulltPath = os.path.join(folderName,fileName)
+    except:
+        outpuFulltPath = r'D:\git\diff_FolderTree_pythonProject\debug\except.txt'
 
-    with open(outpuFulltPath,'w', encoding='utf-8') as f:
-        for d in outputListData:
-            f.write("%s\n" % d)
+    try:
+        with open(outpuFulltPath,'w', encoding='utf-8') as f:
+            f.write(r'[folderName]' + folderName + "\n")
+            f.write(r'[fileName]' + fileName + "\n")
+            f.write(r'[outputListData]' + outputListData + "\n")
+
+            for d in outputListData:
+                f.write("%s\n" % d)
+    except:
+        errMsg = r'[folderName]' + folderName + "\n" + r'[fileName]' + fileName + "\n"
+        outputLogMessage_to_loggerObject(msgType=logging.ERROR, prefix=r'[error]', message=errMsg)
+        return False
+
+        #outpuFulltPath = r'D:\git\diff_FolderTree_pythonProject\debug\except.txt'
+
+        #with open(outpuFulltPath, 'w', encoding='utf-8') as f:
+        #    f.write(r'[folderName]' + folderName + "\n")
+        #    f.write(r'[fileName]' + fileName + "\n")
+        #    f.write(r'[outputListData]' + outputListData + "\n")
+    else:
+        return True

@@ -108,8 +108,8 @@ def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol)
     folderTreeControl.generateFolderTree(path=TopFolder, layer=0, is_last=False,
                                          indent_current=data.indent_tree)
 
-    testFunction.test_output_list_to_textFile(None, r'lst_generateToAddFolderTree.txt',
-                                              data.lst_expandFolderTreeTarget)
+    #testFunction.test_output_list_to_textFile(None, r'lst_generateToAddFolderTree.txt',
+    #                                          data.lst_expandFolderTreeTarget)
     r = startRow
     isLastTrip = False  #一番最後のお出かけブランチ（日帰り、宿泊問わず最後に出かけた日のフォルダ）
     for branch in data.lst_generateToAddFolderTree:
