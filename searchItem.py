@@ -15,8 +15,8 @@ import testFunction
 ########################################################
 def searchKeyword_in_folderTree(sheetsList):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
     wb = xlw.Book(data.currentExcel)
     df_wb = pd.ExcelFile(wb.fullname)
     #wb = pd.ExcelFile(r'D:\git\diff_FolderTree_pythonProject\検索_python.xlsm')
@@ -56,8 +56,8 @@ def searchKeyword_in_folderTree(sheetsList):
 #########################################################################
 def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
     lst_new_colmName=[]
 
     df_base.to_csv(r'D:\git\diff_FolderTree_pythonProject\dataForSezrch\df_base_py_.csv')
@@ -105,8 +105,8 @@ def DataFrame_Formatting( df_base=pd.DataFrame(), saveFullpath=None ):
 #########################################################################
 def searchKeyWord_in_dataFrame( df_toBeSearched, currSheet ):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
 
     ret_keyword = interfaceExcel.getSearchKeyWord()
 

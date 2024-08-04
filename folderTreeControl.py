@@ -23,8 +23,8 @@ dbgCol_folderTreeControl = 5
 ########################################################
 def expandFolderTree(root, col):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
 
     #引数で指定された、フォルダを展開する先頭フォルダの位置を検出
     index = 0
@@ -49,8 +49,8 @@ def expandFolderTree(root, col):
 ########################################################
 def expandFolderTree_from_endOfBranch(root, col):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
 
     rowDownCnt = len(data.lst_branch)  # エクセルシート↑の行番号なので、１から配列要素お個数分。
     lst_end = rowDownCnt - 1            #配列絵インデックスの末尾
@@ -96,8 +96,8 @@ def expandFolderTree_from_endOfBranch(root, col):
 ########################################################
 def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
     # ブランチ名
     work_branchIndex = branchIndex
 
@@ -163,8 +163,8 @@ def expandFolderTree_for_OneBranch(TipBranch, branchIndex):
 ########################################################
 def expandFolderTree_from_BranchTop(root):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
     index = expandTopIndex
     result = False
     mark = ''
@@ -282,8 +282,8 @@ def getFolderFullpath(root):
 ###############################################################################
 def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_tree):
 
-    testFunction.outputLogMessage_to_loggerObject(logging.INFO,
-                                                  inspect.currentframe().f_code.co_name)
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO,
+                                                  message=inspect.currentframe().f_code.co_name)
     if not pathlib.Path(path).is_absolute():
         path = str(pathlib.Path(path).resolve())
 

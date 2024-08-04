@@ -37,7 +37,7 @@ def initialize_loggerObject():
 def finalize_loggerObject():
     logging.shutdown()
 
-def outputLogMessage_to_loggerObject(megType=None, message=None):
+def outputLogMessage_to_loggerObject(msgType=None, message=None):
 
     logger.info(message)
 
