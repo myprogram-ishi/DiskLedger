@@ -215,6 +215,8 @@ def expandFolderTree_from_BranchTop(root):
 ########################################################
 def isIncludeBranchMark(targetBranch):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     try:
         if '├' in targetBranch:
             ret = True
@@ -244,6 +246,8 @@ def isIncludeBranchMark(targetBranch):
 ########################################################
 def getPostionOfHoraizonalBar(targetBranch):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     try:
         if '─' in targetBranch:
             ret = True
@@ -272,6 +276,10 @@ def getPostionOfHoraizonalBar(targetBranch):
 #
 ########################################################
 def getFolderFullpath(root):
+
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
+
     getFolderTree(path=str(root), layer=0, is_last=False, indent_current=data.indent_tree)
 
 ###############################################################################
@@ -324,6 +332,8 @@ def generateFolderTree(path, layer=0, is_last=False, indent_current=data.indent_
 
 def textFilrOpen_with_sakuraEditor(folder=None, file=None):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     if folder == None or file == None or len(folder) == 0 or len(file) == 0:
         fullpath = r'D:\git\testData\sampleFolderTree.txt'
     else:

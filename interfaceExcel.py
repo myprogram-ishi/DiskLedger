@@ -21,6 +21,8 @@ import testFunction
 @xlw.func
 def excelIO_UDF_initialize(srcExcel):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     data.currentExcel = srcExcel
 
     testFunction.initialize_loggerObject()
@@ -57,6 +59,9 @@ def excelIO_UDF_main(srcExcel):
 ########################################################
 @xlw.func
 def excelIO_UDF_updataUserformCaption(userformIndex=None, msssage=None):
+
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     pass
 
 def _excelIO_UDF_updataUserformCaption(userformIndex=None, msssage=None):
@@ -83,6 +88,8 @@ def _excelIO_UDF_updataUserformCaption(userformIndex=None, msssage=None):
 @xlw.func
 def excelIO_UDF_getLatestFolder(targetFolder):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     #フォルダ一覧
     lst_Folder = [f for f in os.listdir(targetFolder) if os.path.isdir(os.path.join(targetFolder, f))]
     #並べ替え
@@ -101,6 +108,8 @@ def excelIO_UDF_getLatestFolder(targetFolder):
 @xlw.func
 def excelIO_UDF_addFolderTree(TopFolder, srcExcel, dstSheet, startRow, StartCol):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     if srcExcel == None:
         srcExcel = data.currentExcel
 
@@ -394,6 +403,8 @@ def excelIO_UDF_outputTargetFullPath( index ):
 ########################################################
 def excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=None, row=1, col=1, outval='No data'):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     if shtName == '' or shtName == None:
         shtName = data.shtName_pyDbgLog
 
@@ -603,6 +614,8 @@ def excelIO_UDF_generateFileCntByFolderList(srcSheet= None, topRow = None, rowCo
 @xlw.func
 def excelIO_UDF_getWorkSheetToDataFrame(srcExcel=None, srcSheet=None, row_colName=None):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     if srcExcel == None:
         srcExcel = xlw.Book.caller()
         ws = wb.sheets[srcSheet]
@@ -643,6 +656,8 @@ def excelIO_UDF_df_fileCntByFolderItem(row, column):
 #       workTextFile=：表示するサクラエディタのファイルあ（基本的にフルパス指定）
 def excelIO_UDF_filrOpen_with_sakuraEditor(topFolder=None, workTextFile=None):
 
+    testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
+                                                  message=inspect.currentframe().f_code.co_name)
     if topFolder == None or topFolder == "":
         topFolder = r'Y:\旅日記\国内日記\2023'
 
