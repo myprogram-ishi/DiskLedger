@@ -62,8 +62,6 @@ def excelIO_UDF_updataUserformCaption(userformIndex=None, msssage=None):
 
     testFunction.outputLogMessage_to_loggerObject(msgType=logging.INFO, prefix=r'[func]',
                                                   message=inspect.currentframe().f_code.co_name)
-
-def _excelIO_UDF_updataUserformCaption(userformIndex=None, msssage=None):
     wb = xlw.Book(data.currentExcel)
     #wb = xlw.Book("検索_python.xlsm")
 
