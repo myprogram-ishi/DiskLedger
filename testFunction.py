@@ -37,10 +37,30 @@ def initialize_loggerObject():
 def finalize_loggerObject():
     logging.shutdown()
 
-def outputLogMessage_to_loggerObject(msgType=None, message=None):
+def outputLogMessage_to_loggerObject(msgType=None, prefix=None,  message=None):
 
-    logger.info(message)
+    lst_msgWord = []
 
+    if prefix != None:
+        lst_msgWord.append(prefix)
+
+    if message != None:
+        lst_msgWord.append(message)
+
+    showMessage = r' '.join(lst_msgWord)
+
+    if logging.INFO:
+        logger.info(showMessage)
+    elif logging.ERROR:
+        logger.error(showMessage)
+    elif logging.WARNING:
+        logger.warning(showMessage)
+    elif logging.DEBUG:
+        logger.debug(showMessage)
+    elif msgType == None:
+        logger.info(r'[None]' + showMessage)
+    else:
+        logger.info(r'[Undefine]' + showMessage)
 
 def test_DataFrame_Formatting():
 
