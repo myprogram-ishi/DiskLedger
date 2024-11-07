@@ -415,6 +415,14 @@ def excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=None, row=1, col=1, 
     sheet_pyLog.cells(row, col).value = outval
 
 ########################################################
+#   フォルダの権限取得
+########################################################
+@xlw.func
+def excelIO_UDF_getFolderPermissions(folderName = None):
+    
+    return os.system('ls {0}'.format(folderName))
+
+########################################################
 #
 ########################################################
 @xlw.func
