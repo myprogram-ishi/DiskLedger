@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 import openpyxl
 import xlwings as xlw
 import inspect
@@ -419,8 +420,32 @@ def excelIO_UDF_writeDataOnWorksheet(srcExcel=None, shtName=None, row=1, col=1, 
 ########################################################
 @xlw.func
 def excelIO_UDF_getFolderPermissions(folderName = None):
-    
-    return os.system('ls {0}'.format(folderName))
+
+    return subprocess.run(['ls', '-l'])
+    #return os.system('ls {0}'.format(folderName))
+
+    #cmd = 'ls'
+    #process = (subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode(
+    #    'utf-8')
+    #return process
+
+########################################################
+#   変更するフォルダ名（フルパス）を生成する。
+#   ※変更するのはフルパスの末尾のフォルダ名のみ。
+#   oldPath : 変更前フルパス
+#   newNameLastBranch : 変更後のフォルダ名
+########################################################
+@xlw.func
+def excelIO_UDF_generateNewFileFullPath( oldFullPath, newEndFolderName ):
+
+    spl_fullPath = oldFullPath.split('\\')
+
+    spl_fullPath[-1] = newEndFolderName
+
+    #newFillpath = os.path.join(*spl_fullPath)
+    newFillpath = ('\\').join(spl_fullPath)
+
+    return newFillpath
 
 ########################################################
 #
