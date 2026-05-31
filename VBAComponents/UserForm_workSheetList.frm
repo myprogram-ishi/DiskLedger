@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm_workSheetList 
    Caption         =   "ワークシート操作"
    ClientHeight    =   4330
-   ClientLeft      =   17112
-   ClientTop       =   664
-   ClientWidth     =   5608
+   ClientLeft      =   17110
+   ClientTop       =   660
+   ClientWidth     =   5610
    OleObjectBlob   =   "UserForm_workSheetList.frx":0000
 End
 Attribute VB_Name = "UserForm_workSheetList"
