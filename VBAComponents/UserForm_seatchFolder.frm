@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm_seatchFolder 
    Caption         =   "フォルダ検索"
    ClientHeight    =   5340
-   ClientLeft      =   140
-   ClientTop       =   570
-   ClientWidth     =   7150
+   ClientLeft      =   144
+   ClientTop       =   568
+   ClientWidth     =   7144
    OleObjectBlob   =   "UserForm_seatchFolder.frx":0000
    StartUpPosition =   1  'オーナー フォームの中央
 End
