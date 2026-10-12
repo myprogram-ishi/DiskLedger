@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm_goToMain 
    Caption         =   "ÉÅÉCÉìÇ…ñﬂÇÈ"
    ClientHeight    =   1680
-   ClientLeft      =   170
+   ClientLeft      =   168
    ClientTop       =   660
-   ClientWidth     =   2770
+   ClientWidth     =   2772
    OleObjectBlob   =   "UserForm_goToMain.frx":0000
 End
 Attribute VB_Name = "UserForm_goToMain"

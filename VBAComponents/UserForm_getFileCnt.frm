@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm_getFileCnt 
    Caption         =   "ファイル数取得"
    ClientHeight    =   4128
-   ClientLeft      =   160
-   ClientTop       =   590
-   ClientWidth     =   6750
+   ClientLeft      =   156
+   ClientTop       =   588
+   ClientWidth     =   6756
    OleObjectBlob   =   "UserForm_getFileCnt.frx":0000
    StartUpPosition =   1  'オーナー フォームの中央
 End
